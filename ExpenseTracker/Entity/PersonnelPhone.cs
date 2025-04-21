@@ -1,0 +1,34 @@
+using Base;
+using Microsoft.EntityFrameworkCore;
+
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace ExpenseTracker.Entity;
+public class PersonnelPhone:BaseEntity
+{
+    public int PersonnelId {get; set;}
+    public Personnel Personnel {get; set;}
+    public string CountryCode { get; set; }
+    public string PhoneNumber { get; set; }
+    public bool IsDefault { get; set; }
+}
+
+public class PersonnelPhoneConfiguration : IEntityTypeConfiguration<PersonnelPhone>
+{
+    public void Configure(EntityTypeBuilder<PersonnelPhone> builder)
+    {
+        builder.HasKey(ep => ep.Id);
+        builder.Property(ep => ep.Id).UseIdentityColumn();
+
+        builder.Property(x => x.CreatedDate).IsRequired(true);
+        builder.Property(x => x.UpdatedDate).IsRequired(false);
+        builder.Property(x => x.CreatedPersonnel).IsRequired(true).HasMaxLength(250);
+        builder.Property(x => x.UpdatedPersonnel).IsRequired(false).HasMaxLength(250);
+        builder.Property(x => x.IsActive).IsRequired(true).HasDefaultValue(true);
+
+        //builder.Property(x => x.PersonnelId).IsRequired(true);
+        builder.Property(ep => ep.CountryCode).IsRequired().HasMaxLength(3);
+        builder.Property(ep => ep.PhoneNumber).IsRequired().HasMaxLength(12);
+        builder.Property(ep => ep.IsDefault).IsRequired();
+    }
+}
