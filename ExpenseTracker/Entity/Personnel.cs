@@ -10,7 +10,9 @@ public class Personnel:BaseEntity
     public string LastName {get; set;}
     public string Email {get; set;}
     public DateTime OpenDate { get; set; }
-    public virtual List<PersonnelPhone> PersonnelPhones { get; set; }
+    
+    public virtual List<PersonnelPhone> personnelPhones { get; set; }
+    public virtual List<PersonnelAddress> personnelAddress { get; set; }
 }
 
 public class PersonnelConfiguration : IEntityTypeConfiguration<Personnel>

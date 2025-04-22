@@ -17,8 +17,8 @@ public class PersonnelPhoneConfiguration : IEntityTypeConfiguration<PersonnelPho
 {
     public void Configure(EntityTypeBuilder<PersonnelPhone> builder)
     {
-        builder.HasKey(ep => ep.Id);
-        builder.Property(ep => ep.Id).UseIdentityColumn();
+        builder.HasKey(pp => pp.Id);
+        builder.Property(pp => pp.Id).UseIdentityColumn();
 
         builder.Property(x => x.CreatedDate).IsRequired(true);
         builder.Property(x => x.UpdatedDate).IsRequired(false);
@@ -27,8 +27,8 @@ public class PersonnelPhoneConfiguration : IEntityTypeConfiguration<PersonnelPho
         builder.Property(x => x.IsActive).IsRequired(true).HasDefaultValue(true);
 
         //builder.Property(x => x.PersonnelId).IsRequired(true);
-        builder.Property(ep => ep.CountryCode).IsRequired().HasMaxLength(3);
-        builder.Property(ep => ep.PhoneNumber).IsRequired().HasMaxLength(12);
-        builder.Property(ep => ep.IsDefault).IsRequired();
+        builder.Property(pp => pp.CountryCode).IsRequired().HasMaxLength(3);
+        builder.Property(pp => pp.PhoneNumber).IsRequired().HasMaxLength(12);
+        builder.Property(pp => pp.IsDefault).IsRequired();
     }
 }
