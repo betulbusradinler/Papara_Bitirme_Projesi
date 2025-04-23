@@ -1,9 +1,9 @@
 using Base;
 namespace ExpenseTracker.Entity;
 
-public Enum DemandsState
+public enum DemandState
 {
-    Onay Bekliyor = 0,
+    OnayBekliyor=0,
     Onaylandı,
     Reddedildi
 }

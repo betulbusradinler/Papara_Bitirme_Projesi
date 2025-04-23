@@ -4,15 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ExpenseTracker.Entity;
 
-public class PaymentCategory:BaseEntity
+// Burada talepler için gerekli alanı girmem gerekiyor
+public class Demand:BaseEntity
 {
-  public string Name {get; set;} 
-  public List<Expense> Expense {get; set;}
+ public DemandState IsState {get; set;}
+ public  Expense Expense {get; set;}
 }
 
-public class PaymentCategoryConfiguration : IEntityTypeConfiguration<PaymentCategory>
+public class DemandConfiguration : IEntityTypeConfiguration<Demand>
 {
-    public void Configure(EntityTypeBuilder<PaymentCategory> builder)
+    public void Configure(EntityTypeBuilder<Demand> builder)
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).UseIdentityColumn();
@@ -23,11 +24,6 @@ public class PaymentCategoryConfiguration : IEntityTypeConfiguration<PaymentCate
         builder.Property(x=> x.UpdatedUser).IsRequired(false).HasMaxLength(250);
         builder.Property(x=> x.IsActive).IsRequired(true).HasDefaultValue(true);
 
-        builder.Property(x => x.Name).IsRequired().HasMaxLength(200);
-
-        builder.HasMany(x => x.Expense)
-            .WithOne(x => x.PaymentCategory)
-            .HasForeignKey(x => x.PaymentCategoryId).IsRequired(true).OnDelete(DeleteBehavior.Cascade);
-
+        builder.Property(x=>x.IsState).IsRequired();
     }
 }
