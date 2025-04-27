@@ -1,4 +1,5 @@
 /Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/bin/Debug/net8.0/Base.deps.json
+/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/bin/Debug/net8.0/Base.runtimeconfig.json
 /Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/bin/Debug/net8.0/Base.dll
 /Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/bin/Debug/net8.0/Base.pdb
 /Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/obj/Debug/net8.0/Base.csproj.AssemblyReference.cache
@@ -10,4 +11,5 @@
 /Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/obj/Debug/net8.0/Base.dll
 /Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/obj/Debug/net8.0/refint/Base.dll
 /Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/obj/Debug/net8.0/Base.pdb
+/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/obj/Debug/net8.0/Base.genruntimeconfig.cache
 /Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/obj/Debug/net8.0/ref/Base.dll

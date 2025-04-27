@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ExpenseTracker.Entity;
+using ExpenseTracker.Domain;
 
 namespace ExpenseTracker.DbOperations;
 
@@ -10,6 +10,11 @@ public class ExpenseTrackDbContext:DbContext
         
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExpenseTrackDbContext).Assembly);
+        base.OnModelCreating(modelBuilder);
+    }
     public DbSet<Demand> Demands { get; set; }
     public DbSet<Expense> Expenses{ get; set; }
     public DbSet<ExpenseDetail> ExpenseDetails{ get; set; }

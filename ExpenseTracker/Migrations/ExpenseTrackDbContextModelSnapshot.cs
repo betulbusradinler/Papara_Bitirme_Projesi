@@ -17,12 +17,12 @@ namespace ExpenseTracker.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ExpenseTracker.Entity.Demand", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.Demand", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,27 +35,30 @@ namespace ExpenseTracker.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<int>("IsState")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Demands");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.Expense", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.Expense", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,13 +71,16 @@ namespace ExpenseTracker.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("DemandId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<int>("PaymentCategoryId")
                         .HasColumnType("int");
@@ -82,12 +88,12 @@ namespace ExpenseTracker.Migrations
                     b.Property<int>("StaffId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -101,7 +107,7 @@ namespace ExpenseTracker.Migrations
                     b.ToTable("Expenses");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.ExpenseDetail", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.ExpenseDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,35 +123,42 @@ namespace ExpenseTracker.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("ExpenseId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("PaymentInstrument")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PaymentPoint")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Receipt")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -154,7 +167,7 @@ namespace ExpenseTracker.Migrations
                     b.ToTable("ExpenseDetails");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.PaymentCategory", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.PaymentCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,28 +180,32 @@ namespace ExpenseTracker.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
                     b.ToTable("PaymentCategories");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.Personnel", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.Personnel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -201,7 +218,8 @@ namespace ExpenseTracker.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -210,28 +228,33 @@ namespace ExpenseTracker.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("OpenDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -242,7 +265,7 @@ namespace ExpenseTracker.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.PersonnelAddress", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.PersonnelAddress", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -251,23 +274,32 @@ namespace ExpenseTracker.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CountryCode")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("District")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
@@ -276,17 +308,21 @@ namespace ExpenseTracker.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Street")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("ZipCode")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 
@@ -295,7 +331,7 @@ namespace ExpenseTracker.Migrations
                     b.ToTable("PersonnelAddresses");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.PersonnelPhone", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.PersonnelPhone", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -305,17 +341,21 @@ namespace ExpenseTracker.Migrations
 
                     b.Property<string>("CountryCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
@@ -325,14 +365,15 @@ namespace ExpenseTracker.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -341,35 +382,35 @@ namespace ExpenseTracker.Migrations
                     b.ToTable("PersonnelPhones");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.ExpenseManager", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.ExpenseManager", b =>
                 {
-                    b.HasBaseType("ExpenseTracker.Entity.Personnel");
+                    b.HasBaseType("ExpenseTracker.Domain.Personnel");
 
                     b.HasDiscriminator().HasValue("ExpenseManager");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.Staff", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.Staff", b =>
                 {
-                    b.HasBaseType("ExpenseTracker.Entity.Personnel");
+                    b.HasBaseType("ExpenseTracker.Domain.Personnel");
 
                     b.HasDiscriminator().HasValue("Staff");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.Expense", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.Expense", b =>
                 {
-                    b.HasOne("ExpenseTracker.Entity.Demand", "Demand")
+                    b.HasOne("ExpenseTracker.Domain.Demand", "Demand")
                         .WithOne("Expense")
-                        .HasForeignKey("ExpenseTracker.Entity.Expense", "DemandId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("ExpenseTracker.Domain.Expense", "DemandId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ExpenseTracker.Entity.PaymentCategory", "PaymentCategory")
+                    b.HasOne("ExpenseTracker.Domain.PaymentCategory", "PaymentCategory")
                         .WithMany("Expense")
                         .HasForeignKey("PaymentCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ExpenseTracker.Entity.Staff", "Staff")
+                    b.HasOne("ExpenseTracker.Domain.Staff", "Staff")
                         .WithMany("Expense")
                         .HasForeignKey("StaffId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -382,9 +423,9 @@ namespace ExpenseTracker.Migrations
                     b.Navigation("Staff");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.ExpenseDetail", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.ExpenseDetail", b =>
                 {
-                    b.HasOne("ExpenseTracker.Entity.Expense", "Expense")
+                    b.HasOne("ExpenseTracker.Domain.Expense", "Expense")
                         .WithMany("ExpenseDetails")
                         .HasForeignKey("ExpenseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -393,9 +434,9 @@ namespace ExpenseTracker.Migrations
                     b.Navigation("Expense");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.PersonnelAddress", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.PersonnelAddress", b =>
                 {
-                    b.HasOne("ExpenseTracker.Entity.Personnel", "Personnel")
+                    b.HasOne("ExpenseTracker.Domain.Personnel", "Personnel")
                         .WithMany("personnelAddresses")
                         .HasForeignKey("PersonnelId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -404,9 +445,9 @@ namespace ExpenseTracker.Migrations
                     b.Navigation("Personnel");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.PersonnelPhone", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.PersonnelPhone", b =>
                 {
-                    b.HasOne("ExpenseTracker.Entity.Personnel", "Personnel")
+                    b.HasOne("ExpenseTracker.Domain.Personnel", "Personnel")
                         .WithMany("personnelPhones")
                         .HasForeignKey("PersonnelId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -415,30 +456,30 @@ namespace ExpenseTracker.Migrations
                     b.Navigation("Personnel");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.Demand", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.Demand", b =>
                 {
                     b.Navigation("Expense")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.Expense", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.Expense", b =>
                 {
                     b.Navigation("ExpenseDetails");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.PaymentCategory", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.PaymentCategory", b =>
                 {
                     b.Navigation("Expense");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.Personnel", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.Personnel", b =>
                 {
                     b.Navigation("personnelAddresses");
 
                     b.Navigation("personnelPhones");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Entity.Staff", b =>
+            modelBuilder.Entity("ExpenseTracker.Domain.Staff", b =>
                 {
                     b.Navigation("Expense");
                 });

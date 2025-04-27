@@ -1,6 +1,9 @@
-
 using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.DbOperations;
+using ExpenseTracker.Mapper;
+using ExpenseTracker.Impl.Cqrs;
+
+namespace ExpenseTracker;
 public class Startup
 {
     public IConfiguration Configuration { get; }
@@ -19,6 +22,12 @@ public class Startup
             options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection"));
         });
 
+        // MediatR
+    
+         services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(CreatePaymentCategoryCommand).Assembly));
+
+        // AutoMapper
+        services.AddAutoMapper(typeof(MapperConfiguration));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
