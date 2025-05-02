@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "OAWdEeZPFHg=",
+  "dgSpecHash": "xR0wjegmCqU=",
   "success": true,
   "projectFilePath": "/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Schema/ExpenseTracker.Schema.csproj",
   "expectedPackageFiles": [
@@ -8,9 +8,9 @@
     "/Users/busrabetuldinler/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "/Users/busrabetuldinler/.nuget/packages/azure.core/1.35.0/azure.core.1.35.0.nupkg.sha512",
     "/Users/busrabetuldinler/.nuget/packages/azure.identity/1.10.3/azure.identity.1.10.3.nupkg.sha512",
-    "/Users/busrabetuldinler/.nuget/packages/fluentvalidation/12.0.0-preview1/fluentvalidation.12.0.0-preview1.nupkg.sha512",
+    "/Users/busrabetuldinler/.nuget/packages/fluentvalidation/11.5.1/fluentvalidation.11.5.1.nupkg.sha512",
     "/Users/busrabetuldinler/.nuget/packages/fluentvalidation.aspnetcore/11.3.0/fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
-    "/Users/busrabetuldinler/.nuget/packages/fluentvalidation.dependencyinjectionextensions/12.0.0-preview1/fluentvalidation.dependencyinjectionextensions.12.0.0-preview1.nupkg.sha512",
+    "/Users/busrabetuldinler/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.5.1/fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "/Users/busrabetuldinler/.nuget/packages/mediatr/12.0.0/mediatr.12.0.0.nupkg.sha512",
     "/Users/busrabetuldinler/.nuget/packages/mediatr.contracts/2.0.0/mediatr.contracts.2.0.0.nupkg.sha512",
     "/Users/busrabetuldinler/.nuget/packages/mediatr.extensions.microsoft.dependencyinjection/11.1.0/mediatr.extensions.microsoft.dependencyinjection.11.1.0.nupkg.sha512",

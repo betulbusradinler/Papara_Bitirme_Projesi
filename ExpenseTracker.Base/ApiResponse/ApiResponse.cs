@@ -1,5 +1,5 @@
 using System.Text.Json;
-namespace ExpenseTracker.Base.ApiResponse;
+namespace ExpenseTracker.Base;
 
 public class ApiResponse
 {

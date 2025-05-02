@@ -1,7 +1,7 @@
-namespace Base.Schema;
+namespace ExpenseTracker.Base;
 public class BaseResponse
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
     public string InsertedUser { get; set; }
     public DateTime InsertedDate { get; set; }
     public string? UpdatedUser { get; set; }

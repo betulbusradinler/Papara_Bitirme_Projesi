@@ -1,4 +1,4 @@
-﻿using Base.Schema;
+﻿using ExpenseTracker.Base;
 namespace ExpenseTracker.Schema;
 
 public class PaymentCategoryRequest

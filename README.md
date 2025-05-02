@@ -1,8 +1,9 @@
 # Papara
 Papara Final Case Taslak Linki
 
-Add DB Connection and Code Revise
-
-- <PackageReference Include="System.Text.Json" Version="10.0.0-preview.3.25171.5" />
-- <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-- Make migration and update db
+Create User Login With JwtToken, Register API and Add UnitOfWOrk Design Pattern
+- Create Auth API
+- Update Personnel Tabble. Add Role,UserName Column For Personnel Table.
+- Add PersonnelPasswordTable and AuditLogTable
+- Refactor ExpenseTracker ExpenseTracker.Api 
+- Create HashHelper Class for PersonnelPassword

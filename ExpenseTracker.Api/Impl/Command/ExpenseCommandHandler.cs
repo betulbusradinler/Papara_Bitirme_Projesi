@@ -1,0 +1,69 @@
+using AutoMapper;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using ExpenseTracker.Api.Domain;
+using ExpenseTracker.Api.DbOperations;
+using ExpenseTracker.Api.Impl.Cqrs;
+using ExpenseTracker.Base;
+using ExpenseTracker.Schema;
+
+namespace ExpenseTracker.Api.Impl.Command;
+
+public class ExpenseCommandHandler :
+IRequestHandler<CreateExpenseCommand, ApiResponse>,
+IRequestHandler<UpdateExpenseCommand, ApiResponse>,
+IRequestHandler<DeleteExpenseCommand, ApiResponse>
+{
+    private readonly ExpenseTrackDbContext dbContext;
+    private readonly IMapper mapper;
+
+    public ExpenseCommandHandler(ExpenseTrackDbContext dbContext, IMapper mapper)
+    {
+        this.dbContext = dbContext;
+        this.mapper = mapper;
+    }
+    public async Task<ApiResponse> Handle(CreateExpenseCommand request, CancellationToken cancellationToken)
+    {
+        // var mapped = mapper.Map<PaymentCategory>(request.PaymentCategoryRequest);
+
+        // var Entity = await dbContext.AddAsync(mapped, cancellationToken);
+        // await dbContext.SaveChangesAsync(cancellationToken);
+        // var response = mapper.Map<PaymentCategoryResponse>(Entity.Entity);
+       
+        return new ApiResponse("Başarılı");
+    }
+
+    public async Task<ApiResponse> Handle(UpdateExpenseCommand request, CancellationToken cancellationToken)
+    {
+        
+        // var Entity = await dbContext.Set<PaymentCategory>().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        // if (Entity == null)
+        //     return new ApiResponse("PaymentCategory not found");
+
+        // if (!Entity.IsActive)
+        //     return new ApiResponse("PaymentCategory is not active");
+
+        // Entity.Name = request.PaymentCategoryRequest.Name;
+
+        // await dbContext.SaveChangesAsync(cancellationToken);
+       
+        return new ApiResponse();
+    }
+
+    
+    public async Task<ApiResponse> Handle(DeleteExpenseCommand request, CancellationToken cancellationToken)
+    {
+    //   var Entity = await dbContext.Set<PaymentCategory>().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+    //     if (Entity == null)
+    //         return new ApiResponse("PaymentCategory not found");
+
+    //     if (!Entity.IsActive)
+    //         return new ApiResponse("PaymentCategory is not active");
+
+    //     Entity.IsActive = false;
+
+    //     await dbContext.SaveChangesAsync(cancellationToken);
+     
+        return new ApiResponse();
+    }
+}

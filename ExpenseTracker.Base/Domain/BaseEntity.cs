@@ -1,4 +1,4 @@
-﻿namespace ExpenseTracker.Base.Domain;
+﻿namespace ExpenseTracker.Base;
 
 public class BaseEntity{
     public int Id {get; set;}
