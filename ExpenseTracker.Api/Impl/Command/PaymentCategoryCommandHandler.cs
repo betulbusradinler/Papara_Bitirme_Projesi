@@ -6,6 +6,7 @@ using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Impl.Cqrs;
 using ExpenseTracker.Base;
 using ExpenseTracker.Schema;
+using ExpenseTracker.Api.Impl.UnitOfWork;
 
 namespace ExpenseTracker.Api.Impl.Command;
 
@@ -14,12 +15,12 @@ IRequestHandler<CreatePaymentCategoryCommand, ApiResponse<PaymentCategoryRespons
 IRequestHandler<UpdatePaymentCategoryCommand, ApiResponse>,
 IRequestHandler<DeletePaymentCategoryCommand, ApiResponse> 
 {
-    private readonly ExpenseTrackDbContext dbContext;
+    private readonly  IUnitOfWork unitOfWork;
     private readonly IMapper mapper;
 
-    public PaymentCategoryCommandHandler(ExpenseTrackDbContext dbContext, IMapper mapper)
+    public PaymentCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        this.dbContext = dbContext;
+        this.unitOfWork = unitOfWork;
         this.mapper = mapper;
     }
 
@@ -27,25 +28,23 @@ IRequestHandler<DeletePaymentCategoryCommand, ApiResponse>
     {
         var mapped = mapper.Map<PaymentCategory>(request.PaymentCategoryRequest);
 
-        var Entity = await dbContext.AddAsync(mapped, cancellationToken);
-        await dbContext.SaveChangesAsync(cancellationToken);
-        var response = mapper.Map<PaymentCategoryResponse>(Entity.Entity);
+        var entity = await unitOfWork.PaymentCategoryRepository.AddAsync(mapped);
+
+        var response = mapper.Map<PaymentCategoryResponse>(entity);
        
         return new ApiResponse<PaymentCategoryResponse>(response);
     }
 
     public async Task<ApiResponse> Handle(UpdatePaymentCategoryCommand request, CancellationToken cancellationToken)
     {
-        var Entity = await dbContext.Set<PaymentCategory>().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-        if (Entity == null)
+        var entity = await unitOfWork.PaymentCategoryRepository.GetByIdAsync(request.Id);
+        if (entity == null)
             return new ApiResponse("PaymentCategory not found");
 
-        if (!Entity.IsActive)
+        if (!entity.IsActive)
             return new ApiResponse("PaymentCategory is not active");
 
-        Entity.Name = request.PaymentCategoryRequest.Name;
-
-        await dbContext.SaveChangesAsync(cancellationToken);
+        entity.Name = request.PaymentCategoryRequest.Name;
        
         return new ApiResponse();
     }
@@ -53,20 +52,13 @@ IRequestHandler<DeletePaymentCategoryCommand, ApiResponse>
     
     public async Task<ApiResponse> Handle(DeletePaymentCategoryCommand request, CancellationToken cancellationToken)
     {
-      var Entity = await dbContext.Set<PaymentCategory>().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-        if (Entity == null)
+      var entity = await  unitOfWork.PaymentCategoryRepository.GetByIdAsync(request.Id);
+        if (entity == null)
             return new ApiResponse("PaymentCategory not found");
 
-        if (!Entity.IsActive)
+        if (!entity.IsActive)
             return new ApiResponse("PaymentCategory is not active");
-
-        Entity.IsActive = false;
-
-        await dbContext.SaveChangesAsync(cancellationToken);
      
         return new ApiResponse();
     }
 }
-
-/* IRequestHandler<UpdatePaymentCategoryCommand, ApiResponse>,
-IRequestHandler<DeletePaymentCategoryCommand, ApiResponse> */

@@ -1,33 +1,29 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using ExpenseTracker.Api.Domain;
-using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Impl.Cqrs;
 using ExpenseTracker.Schema;
 using ExpenseTracker.Base;
 using ExpenseTracker.Api.Service;
+using ExpenseTracker.Api.Impl.UnitOfWork;
 
 namespace ExpenseTracker.Api.Impl.Command;
 
 public class AuthCommandHandler :
 IRequestHandler<CreateAuthTokenCommand, ApiResponse<AuthResponse>>
 {
-    private readonly ExpenseTrackDbContext dbContext;
+    private readonly IUnitOfWork unitOfWork;
     private readonly ITokenService tokenService;
     private readonly JwtConfig jwtConfig;
 
-    public AuthCommandHandler(ExpenseTrackDbContext dbContext, ITokenService tokenService, JwtConfig jwtConfig)
+    public AuthCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, JwtConfig jwtConfig)
     {
-        this.dbContext = dbContext;
+        this.unitOfWork = unitOfWork;
         this.tokenService = tokenService;
         this.jwtConfig = jwtConfig;
     }
     
     public async Task<ApiResponse<AuthResponse>> Handle(CreateAuthTokenCommand request, CancellationToken cancellationToken)
     {
-        var personnel = await dbContext.Set<Personnel>().Include(p=>p.PersonnelPassword)
-                    .FirstOrDefaultAsync(x => x.UserName == request.Auth.UserName, cancellationToken);
-
+        var personnel = await unitOfWork.PersonnelRepository.GetByUserNameAsync(request.Auth.UserName);
         if (personnel == null)
             return new ApiResponse<AuthResponse>("Personnel username or password is incorrect");
 

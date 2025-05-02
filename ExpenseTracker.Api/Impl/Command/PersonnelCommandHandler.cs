@@ -13,13 +13,11 @@ public class PersonnelCommandHandler:IRequestHandler<CreatePersonnelCommand, Api
 IRequestHandler<UpdatePersonnelCommand, ApiResponse>,
 IRequestHandler<DeletePersonnelCommand, ApiResponse>
 {
-    private readonly ExpenseTrackDbContext dbContext;
     private readonly IMapper mapper;
     private readonly IAppSession appSession;
     private readonly IUnitOfWork unitOfWork;
-    public PersonnelCommandHandler(ExpenseTrackDbContext dbContext, IMapper mapper, IAppSession appSession, IUnitOfWork unitOfWork)
+    public PersonnelCommandHandler(IMapper mapper, IAppSession appSession, IUnitOfWork unitOfWork)
     {
-        this.dbContext = dbContext;
         this.mapper = mapper;
         this.appSession = appSession;
         this.unitOfWork = unitOfWork;
@@ -33,10 +31,10 @@ IRequestHandler<DeletePersonnelCommand, ApiResponse>
 
         var mapped = mapper.Map<Personnel>(request.PersonnelRequest);  
 
-        var entity = await dbContext.AddAsync(mapped, cancellationToken);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        var entity = await unitOfWork.PersonnelRepository.AddAsync(mapped);
 
-        var response = mapper.Map<PersonnelResponse>(entity.Entity);
+        var response = mapper.Map<PersonnelResponse>(entity);
+
         return new ApiResponse();
     }
 

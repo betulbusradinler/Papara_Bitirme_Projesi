@@ -1,11 +1,8 @@
 using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using ExpenseTracker.Api.Domain;
-using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Impl.Cqrs;
 using ExpenseTracker.Base;
-using ExpenseTracker.Schema;
+using ExpenseTracker.Api.Impl.UnitOfWork;
 
 namespace ExpenseTracker.Api.Impl.Command;
 
@@ -14,12 +11,12 @@ IRequestHandler<CreateExpenseCommand, ApiResponse>,
 IRequestHandler<UpdateExpenseCommand, ApiResponse>,
 IRequestHandler<DeleteExpenseCommand, ApiResponse>
 {
-    private readonly ExpenseTrackDbContext dbContext;
+    private readonly IUnitOfWork unitOfWork;
     private readonly IMapper mapper;
 
-    public ExpenseCommandHandler(ExpenseTrackDbContext dbContext, IMapper mapper)
+    public ExpenseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        this.dbContext = dbContext;
+        this.unitOfWork = unitOfWork;
         this.mapper = mapper;
     }
     public async Task<ApiResponse> Handle(CreateExpenseCommand request, CancellationToken cancellationToken)
