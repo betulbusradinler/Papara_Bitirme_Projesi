@@ -1,10 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ExpenseTracker.Schema;
-using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Impl.Cqrs;
-using ExpenseTracker.Api.Domain;
-
 namespace ExpenseTracker.Api;
 
 [NonController]
@@ -13,10 +10,10 @@ namespace ExpenseTracker.Api;
 [Route("api/[controller]")]
 public class PersonnelPhoneController : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly IMediator mediator;
     public PersonnelPhoneController(IMediator mediator)
     {
-        _mediator = mediator;
+        this.mediator = mediator;
     }
 
     [HttpGet]
@@ -36,7 +33,7 @@ public class PersonnelPhoneController : ControllerBase
     public async Task<IActionResult> Post([FromBody] PersonnelPhoneRequest personnelPhoneRequest)
     {
         var operation = new CreatePersonnelPhoneCommand(personnelPhoneRequest);
-        var result = await _mediator.Send(operation);
+        var result = await mediator.Send(operation);
         return Ok(result);
     }
     

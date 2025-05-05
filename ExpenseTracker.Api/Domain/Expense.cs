@@ -9,12 +9,10 @@ public class Expense:BaseEntity
 {
   public int PaymentCategoryId {get; set;}
   public int StaffId {get; set;}
-  public int DemandId {get; set;}
-  public Demand Demand {get; set;}
-  public Staff Staff {get; set;}
-  public PaymentCategory PaymentCategory {get; set;}
-  public virtual List<ExpenseDetail> ExpenseDetails {get; set;}
-
+  public DemandState Demand {get; set;}
+  public virtual Staff Staff {get; set;}
+  public virtual PaymentCategory PaymentCategory {get; set;}
+  public virtual ExpenseDetail ExpenseDetail {get; set;}
 }
 public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
 {
@@ -30,18 +28,12 @@ public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
 
         builder.Property(x => x.PaymentCategoryId).IsRequired(true);
         builder.Property(x => x.StaffId).IsRequired(true);
-        builder.Property(x => x.DemandId).IsRequired(true);
         
-        builder.HasMany(x => x.ExpenseDetails)
+        builder.HasOne(x => x.ExpenseDetail)
           .WithOne(x => x.Expense)
-          .HasForeignKey(x => x.ExpenseId)
+          .HasForeignKey<ExpenseDetail>(x => x.ExpenseId)
           .IsRequired(true)
           .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne(e => e.Demand)
-          .WithOne(d => d.Expense)
-          .HasForeignKey<Expense>(e => e.DemandId)
-          .OnDelete(DeleteBehavior.Restrict);
 
     }    
 }

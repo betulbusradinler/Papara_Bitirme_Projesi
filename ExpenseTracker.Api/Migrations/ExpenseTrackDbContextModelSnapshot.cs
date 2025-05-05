@@ -60,42 +60,6 @@ namespace ExpenseTracker.Api.Migrations
                     b.ToTable("AuditLog", "dbo");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Api.Domain.Demand", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedUser")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<int>("IsState")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedUser")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Demands");
-                });
-
             modelBuilder.Entity("ExpenseTracker.Api.Domain.Expense", b =>
                 {
                     b.Property<int>("Id")
@@ -112,7 +76,7 @@ namespace ExpenseTracker.Api.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int>("DemandId")
+                    b.Property<int>("Demand")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -135,9 +99,6 @@ namespace ExpenseTracker.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DemandId")
-                        .IsUnique();
-
                     b.HasIndex("PaymentCategoryId");
 
                     b.HasIndex("StaffId");
@@ -154,6 +115,7 @@ namespace ExpenseTracker.Api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -200,7 +162,8 @@ namespace ExpenseTracker.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExpenseId");
+                    b.HasIndex("ExpenseId")
+                        .IsUnique();
 
                     b.ToTable("ExpenseDetails");
                 });
@@ -495,12 +458,6 @@ namespace ExpenseTracker.Api.Migrations
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.Expense", b =>
                 {
-                    b.HasOne("ExpenseTracker.Api.Domain.Demand", "Demand")
-                        .WithOne("Expense")
-                        .HasForeignKey("ExpenseTracker.Api.Domain.Expense", "DemandId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("ExpenseTracker.Api.Domain.PaymentCategory", "PaymentCategory")
                         .WithMany("Expense")
                         .HasForeignKey("PaymentCategoryId")
@@ -513,8 +470,6 @@ namespace ExpenseTracker.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Demand");
-
                     b.Navigation("PaymentCategory");
 
                     b.Navigation("Staff");
@@ -523,8 +478,8 @@ namespace ExpenseTracker.Api.Migrations
             modelBuilder.Entity("ExpenseTracker.Api.Domain.ExpenseDetail", b =>
                 {
                     b.HasOne("ExpenseTracker.Api.Domain.Expense", "Expense")
-                        .WithMany("ExpenseDetails")
-                        .HasForeignKey("ExpenseId")
+                        .WithOne("ExpenseDetail")
+                        .HasForeignKey("ExpenseTracker.Api.Domain.ExpenseDetail", "ExpenseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -564,15 +519,10 @@ namespace ExpenseTracker.Api.Migrations
                     b.Navigation("Personnel");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Api.Domain.Demand", b =>
-                {
-                    b.Navigation("Expense")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ExpenseTracker.Api.Domain.Expense", b =>
                 {
-                    b.Navigation("ExpenseDetails");
+                    b.Navigation("ExpenseDetail")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.PaymentCategory", b =>

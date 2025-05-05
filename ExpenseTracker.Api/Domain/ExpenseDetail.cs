@@ -26,7 +26,7 @@ public class ExpenseDetailConfiguration : IEntityTypeConfiguration<ExpenseDetail
         builder.Property(x=> x.UpdatedUser).IsRequired(false).HasMaxLength(250);
         builder.Property(x=> x.IsActive).IsRequired(true).HasDefaultValue(true);
 
-        builder.Property(x => x.Amount).IsRequired();
+        builder.Property(x => x.Amount).IsRequired().HasPrecision(18, 2);
         builder.Property(x => x.Description).HasMaxLength(250);
         builder.Property(x => x.PaymentPoint).IsRequired().HasMaxLength(100);
         builder.Property(x => x.PaymentInstrument).IsRequired().HasMaxLength(100);

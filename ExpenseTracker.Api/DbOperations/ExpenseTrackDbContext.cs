@@ -20,7 +20,7 @@ public class ExpenseTrackDbContext:DbContext
         base.OnModelCreating(modelBuilder);
     }
 
-     public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var entyList = ChangeTracker.Entries().Where(e => e.Entity is BaseEntity
          && (e.State == EntityState.Deleted || e.State == EntityState.Added || e.State == EntityState.Modified));
@@ -36,7 +36,6 @@ public class ExpenseTrackDbContext:DbContext
             var originalValues = properties.ToDictionary(p => p.Metadata.Name, p => p.OriginalValue);
             var changedValuesString = JsonConvert.SerializeObject(changedValues.Select(kvp => new { Key = kvp.Key, Value = kvp.Value }));
             var originalValuesString = JsonConvert.SerializeObject(originalValues.Select(kvp => new { Key = kvp.Key, Value = kvp.Value }));
-
 
             var auditLog = new AuditLog
             {
@@ -79,13 +78,11 @@ public class ExpenseTrackDbContext:DbContext
         return base.SaveChangesAsync(cancellationToken);
     }
 
-    public DbSet<Demand> Demands { get; set; }
     public DbSet<Expense> Expenses{ get; set; }
     public DbSet<ExpenseDetail> ExpenseDetails{ get; set; }
     public DbSet<ExpenseManager> ExpenseManagers { get; set; }
     public DbSet<PaymentCategory> PaymentCategories { get; set; }
     public DbSet<Personnel> Personnels { get; set; }
     public DbSet<PersonnelAddress> PersonnelAddresses { get; set; }
-    //public DbSet<PersonnelRole> PersonnelRole { get; set; }
     public DbSet<Staff> Staffs { get; set; }
 }

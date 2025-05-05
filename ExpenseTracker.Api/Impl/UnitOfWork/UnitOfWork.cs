@@ -3,6 +3,7 @@ using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Impl.GenericRepository;
 using Serilog;
 using ExpenseTracker.Api.Impl.GenericRepository.PersonnelRepository;
+using ExpenseTracker.Api.Impl.GenericRepository.ExpenseRepository;
 
 namespace ExpenseTracker.Api.Impl.UnitOfWork;
 
@@ -15,25 +16,13 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         this.dbContext = dbContext;
     }
 
-    public IGenericRepository<Demand> DemandRepository => new GenericRepository<Demand>(dbContext);
-    public IGenericRepository<Expense> ExpenseRepository => new GenericRepository<Expense>(dbContext);
+    public IExpenseRepository ExpenseRepository => new ExpenseRepository(dbContext);
     public IGenericRepository<ExpenseDetail> ExpenseDetailRepository => new GenericRepository<ExpenseDetail>(dbContext);
     public IGenericRepository<ExpenseManager> ExpenseManagerRepository => new GenericRepository<ExpenseManager>(dbContext);
     public IGenericRepository<PaymentCategory> PaymentCategoryRepository => new GenericRepository<PaymentCategory>(dbContext); 
     public IGenericRepository<PersonnelPhone> PersonnelPhoneRepository => new GenericRepository<PersonnelPhone>(dbContext);
     public IGenericRepository<PersonnelAddress> PersonnelAddressRepository => new GenericRepository<PersonnelAddress>(dbContext);
     IPersonnelRepository IUnitOfWork.PersonnelRepository => new PersonnelRepository(dbContext);
-
-    // {
-    //     get
-    //     {
-    //         if (personnelRepository == null)
-    //         {
-    //             personnelRepository = new PersonnelRepository(dbContext);
-    //         }
-    //         return personnelRepository;
-    //     }
-    // }
 
     public async Task Complete()
     {

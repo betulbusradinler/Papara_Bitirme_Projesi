@@ -1,0 +1,5 @@
+{
+    "editor.formatOnType": true,
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "editor.formatOnSave": true
+}

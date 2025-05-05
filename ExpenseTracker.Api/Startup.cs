@@ -9,6 +9,8 @@ using ExpenseTracker.Base;
 using ExpenseTracker.Api.Service;
 using ExpenseTracker.Api.Impl.UnitOfWork;
 using Microsoft.OpenApi.Models;
+using FluentValidation.AspNetCore;
+using ExpenseTracker.Api.Validation;
 
 namespace ExpenseTracker;
 public class Startup
@@ -20,6 +22,12 @@ public class Startup
     {
         JwtConfig = Configuration.GetSection("JwtConfig").Get<JwtConfig>();
         services.AddSingleton<JwtConfig>(JwtConfig);
+
+        services.AddControllers().AddFluentValidation(x =>
+        {
+            x.RegisterValidatorsFromAssemblyContaining<AuthValidator>();
+        });
+
         services.AddHttpContextAccessor();
         // Add services to the container.
         services.AddControllers();
@@ -41,7 +49,9 @@ public class Startup
         services.AddScoped<ITokenService, TokenService>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        
+
+        services.AddScoped<IPaymentService, PaymentService>();
+
         services.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -65,10 +75,10 @@ public class Startup
 
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "OTS Api Management", Version = "v1.0" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "ExpenseTracker API", Version = "v1.0" });
             var securityScheme = new OpenApiSecurityScheme
             {
-                Name = "Para Management for IT Company",
+                Name = "ExpenseTracker Management",
                 Description = "Enter JWT Bearer token **_only_**",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
@@ -85,6 +95,7 @@ public class Startup
             {
                     { securityScheme, new string[] { } }
             });
+
         });
 
         services.AddScoped<IAppSession>(provider =>
@@ -106,7 +117,16 @@ public class Startup
             app.UseSwaggerUI();
         }
 
+
+        using (var scope = app.ApplicationServices.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<ExpenseTrackDbContext>();
+            DbInitializer.InitializeAsync(db);
+        }
+
+
         app.UseHttpsRedirection();
+        app.UseAuthentication();
         app.UseRouting();
         app.UseAuthorization();
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

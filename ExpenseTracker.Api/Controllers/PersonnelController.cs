@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ExpenseTracker.Api;
 
-[Authorize(Roles = "admin")]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class PersonnelController : ControllerBase

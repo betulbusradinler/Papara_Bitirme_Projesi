@@ -1,57 +1,86 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ExpenseTracker.Schema;
-using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Impl.Cqrs;
-using ExpenseTracker.Api.Domain;
 
-namespace ExpenseTracker;
+namespace ExpenseTracker.Api;
 
 [ApiController]
 [Route("api/[controller]")]
 public class ExpenseController : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly IMediator mediator;
     public ExpenseController(IMediator mediator)
     {
-        _mediator = mediator;
+        this.mediator = mediator;
     }
 
+    // [Authorize(Role="Admin")]
     [HttpGet(Name = "GetExpenseDemands")]
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
-        // Tüm kullanıcıların Harcamalarını getirir. 
-        return Ok("test");
-    }
-    
-    [HttpGet("{id}")]
-    public IActionResult GetExpenseById(int Id)
-    {
-        // İstenen harcamayı detayı ile birlikte getirir.
-        return Ok("test");
+        var operation = new GetAllExpenseQuery();
+        var result = await mediator.Send(operation);
+        return Ok(result);
     }
 
+    // [Authorize(Role="Admin")] ????????
+    [HttpGet("PersonnelId")]
+    public async Task<IActionResult> GetExpenseById()
+    {
+        var operation = new GetAllPersonnelExpenseQuery();
+        var result = await mediator.Send(operation);
+        return Ok(result);
+    }
+
+    //[Authorize(Role="Personnel")]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] ExpenseRequest ExpenseRequest)
     {
         var operation = new CreateExpenseCommand(ExpenseRequest);
-        var result = await _mediator.Send(operation);
+        var result = await mediator.Send(operation);
         return Ok(result);
     }
-    
-    // [HttpPut("{id}")]
-    // public async Task<IActionResult> Put([FromRoute] int id, [FromBody] PaymentCategoryRequest paymentCategoryRequest)
-    // {
-    //     var operation = new UpdatePaymentCategoryCommand(id,paymentCategoryRequest);
-    //     var result = await _mediator.Send(operation);
-    //     return Ok(result);
-    // }
 
-    // [HttpDelete("{id}")]
-    // public async Task<IActionResult> Delete([FromRoute] int id)
-    // {
-    //     var operation = new DeletePaymentCategoryCommand(id);
-    //     var result = await _mediator.Send(operation);
-    //     return Ok(result);
-    // }
+    //[Authorize(Role="Personnel")]
+    [NonAction]
+    [HttpPost("AddExpenseList")]
+    public async Task<IActionResult> ExpenseListPost([FromBody] List<ExpenseRequest> ExpenseRequests)
+    {
+        var operation = new CreateExpenseListCommand(ExpenseRequests);
+        var result = await mediator.Send(operation);
+        return Ok(result);
+    }
+
+    [HttpPost("filter")]
+    public async Task<IActionResult> GetFilteredExpenses([FromBody] ExpenseFilterRequest filter)
+    {
+        var operation = new GetFilteredExpensesQuery(filter);
+        var result = await mediator.Send(operation);
+        return Ok(result);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put([FromRoute] int id, [FromBody] ExpenseRequest ExpenseRequest)
+    {
+        var operation = new UpdateExpenseCommand(id, ExpenseRequest);
+        var result = await mediator.Send(operation);
+        return Ok(result);
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> Put([FromRoute] int id, [FromBody] UpdateExpenseDemandRequest UpdateExpenseDemandRequest)
+    {
+        var operation = new UpdateExpenseDemandCommand(id, UpdateExpenseDemandRequest);
+        var result = await mediator.Send(operation);
+        return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
+        var operation = new DeleteExpenseCommand(id);
+        var result = await mediator.Send(operation);
+        return Ok(result);
+    }
 }

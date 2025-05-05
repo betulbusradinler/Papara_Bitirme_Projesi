@@ -21,17 +21,20 @@ public class PaymentCategoryController : ControllerBase
     }
 
     [HttpGet(Name = "GetPaymentCategory")]
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
-        return Ok("test");
+        var operation = new GetAllPaymentCategoryQuery();
+        var result = await _mediator.Send(operation);
+        return Ok(result);
     }   
     
     [HttpGet("{id}")]
-    public IActionResult GetPaymentCategory(int Id)
+    public async Task<IActionResult> GetPaymentCategory([FromRoute] int id)
     {
-        return Ok("test");
+        var operation = new GetPaymentCategoryByIdQuery(id);
+        var result = await _mediator.Send(operation);
+        return Ok(result);
     }
-
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] PaymentCategoryRequest PaymentCategoryRequest)

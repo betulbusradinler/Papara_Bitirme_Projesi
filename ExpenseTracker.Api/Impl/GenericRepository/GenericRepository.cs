@@ -14,10 +14,15 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         this.dbContext = dbContext;
     }
 
-
     public async Task<TEntity> AddAsync(TEntity entity)
     {
         await dbContext.Set<TEntity>().AddAsync(entity);
+        return entity;
+    }
+
+    public async Task<List<TEntity>> AddRangeAsync(List<TEntity> entity)
+    {
+        await dbContext.Set<TEntity>().AddRangeAsync(entity);
         return entity;
     }
 
@@ -49,7 +54,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         return await EntityFrameworkQueryableExtensions.ToListAsync(query);
     }
 
-    public async Task<TEntity> GetByIdAsync(long id, params string[] includes)
+    public async Task<TEntity> GetByIdAsync(int id, params string[] includes)
     {
         var query = dbContext.Set<TEntity>().AsQueryable();
         query = includes.Aggregate(query, (current, inc) => EntityFrameworkQueryableExtensions.Include(current, inc));
@@ -71,5 +76,14 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         var query = dbContext.Set<TEntity>().Where(predicate).AsQueryable();
         query = includes.Aggregate(query, (current, inc) => EntityFrameworkQueryableExtensions.Include(current, inc));
         return await EntityFrameworkQueryableExtensions.ToListAsync(query);
+    }
+    
+    public async Task DeleteByIdAsync(int id)
+    {
+        var entity = await dbContext.Set<TEntity>().FindAsync(id);
+        if (entity != null)
+        {
+            dbContext.Set<TEntity>().Remove(entity);
+        }
     }
 }

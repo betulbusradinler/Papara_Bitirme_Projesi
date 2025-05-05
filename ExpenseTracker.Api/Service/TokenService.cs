@@ -34,11 +34,11 @@ public class TokenService:ITokenService{
     {
         var claims = new List<Claim>
         {
-            new Claim("Role", personnel.Role),
+            new Claim(ClaimTypes.Role, personnel.Role),
             new Claim("FirstName", personnel.FirstName),
             new Claim("LastName", personnel.LastName),
             new Claim("UserName", personnel.UserName),
-            new Claim("personnelId", personnel.Id.ToString()),
+            new Claim("PersonnelId", personnel.Id.ToString()),
             new Claim("Secret", personnel.PersonnelPassword.Secret.ToString())
         };
         return claims.ToArray();

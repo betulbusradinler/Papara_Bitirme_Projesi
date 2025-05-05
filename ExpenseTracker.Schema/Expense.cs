@@ -3,22 +3,24 @@ namespace ExpenseTracker.Schema;
 
 public class ExpenseRequest
 {
- // böyle bir payment category var mı control etmeliyim 
-  public int PaymentCategoryId {get; set;} 
-  // Çalışan Id Sessiondan gelcek
-  public int StaffId {get; set;}
-  public decimal Amount {get; set;}
-  public string? Description {get; set;}
-  public string PaymentPoint {get; set;} 
-  public string PaymentInstrument {get; set;}
-  public string Receipt {get; set;}  // Bu alanda görsel yükleme olcak bunu Hatay Bul projesinden bakıcam
+  public int PaymentCategoryId {get; set;}
+
+  public ExpenseDetailRequest ExpenseDetailRequest { get; set; }
 }
 
 public class ExpenseResponse:BaseResponse
-{  
-  public int PaymentCategoryId {get; set;} 
-  // Çalışan Id Sessiondan gelcek
+{
+  public int Id { get; set; }
+  public int PaymentCategoryId { get; set; }
   public int StaffId {get; set;}
   public decimal Amount {get; set;}
-  public string IsState {get; set;}
+  public string DemandState { get; set; }
+  public ExpenseDetailResponse ExpenseDetailResponse { get; set; }
+}
+public class ExpenseFilterRequest
+{
+  public int? PaymentCategoryId { get; set; }
+  public int? DemandState { get; set; }
+  public DateTime? StartDate { get; set; }
+  public DateTime? EndDate { get; set; }
 }

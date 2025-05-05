@@ -54,6 +54,7 @@ IRequestHandler<DeletePersonnelCommand, ApiResponse>
 
         unitOfWork.PersonnelRepository.Update(entity);
         await unitOfWork.Complete();
+
         return new ApiResponse();
     }
 
@@ -66,10 +67,9 @@ IRequestHandler<DeletePersonnelCommand, ApiResponse>
         if (!entity.IsActive)
             return new ApiResponse("Personnel is not active");
 
-        entity.IsActive = false;
-
         unitOfWork.PersonnelAddressRepository.Update(entity);
         await unitOfWork.Complete();
+        
         return new ApiResponse();
     }
 
