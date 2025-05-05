@@ -11,6 +11,7 @@ public class Personnel:BaseEntity
     public string FirstName {get; set;}
     public string LastName {get; set;}
     public string Email {get; set;}
+    public string Iban { get; set; }
     public DateTime OpenDate { get; set; }
     public DateTime? LastLoginDate { get; set; }
     public virtual PersonnelPassword PersonnelPassword { get; set; }

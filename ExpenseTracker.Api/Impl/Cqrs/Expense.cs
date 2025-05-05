@@ -11,5 +11,5 @@ public record GetAllPersonnelExpenseQuery() : IRequest<ApiResponse<List<ExpenseR
 public record CreateExpenseCommand(ExpenseRequest ExpenseRequest) : IRequest<ApiResponse<ExpenseResponse>>;
 public record CreateExpenseListCommand(List<ExpenseRequest> ExpenseRequests) : IRequest<ApiResponse<List<ExpenseResponse>>>;
 public record UpdateExpenseCommand(int Id, ExpenseRequest ExpenseRequest) : IRequest<ApiResponse>;
-public record UpdateExpenseDemandCommand(int Id, UpdateExpenseDemandRequest UpdateExpenseDemandRequest) : IRequest<ApiResponse>;
+public record ApproveOrRejectExpenseCommand(int Id, ApproveOrRejectExpenseRequest approveOrRejectExpense) : IRequest<ApiResponse>;
 public record DeleteExpenseCommand(int Id) : IRequest<ApiResponse>;

@@ -14,5 +14,6 @@ public interface IUnitOfWork : IDisposable
     IGenericRepository<PaymentCategory> PaymentCategoryRepository { get; }
     IPersonnelRepository PersonnelRepository { get; }
     IGenericRepository<PersonnelAddress> PersonnelAddressRepository { get; }
+    IGenericRepository<Payment> PaymentRepository { get; }
     IGenericRepository<PersonnelPhone> PersonnelPhoneRepository { get; }
 }

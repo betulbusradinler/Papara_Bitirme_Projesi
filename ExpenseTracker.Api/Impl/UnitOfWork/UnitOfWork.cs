@@ -24,6 +24,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     public IGenericRepository<PersonnelAddress> PersonnelAddressRepository => new GenericRepository<PersonnelAddress>(dbContext);
     IPersonnelRepository IUnitOfWork.PersonnelRepository => new PersonnelRepository(dbContext);
 
+    public IGenericRepository<Payment> PaymentRepository => new GenericRepository<Payment>(dbContext);
+
     public async Task Complete()
     {
         using (var transaction = await dbContext.Database.BeginTransactionAsync())

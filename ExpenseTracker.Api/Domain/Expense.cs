@@ -5,14 +5,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace ExpenseTracker.Api.Domain;
 
 //Masraf talebi için kategori bilgisi olmalı. Talep edilen ödeme kategorisi ödeme aracı ödeme yapılan konum ve fiş yada fatura vb dökümanlar sisteme yüklenebilmeli.
-public class Expense:BaseEntity
+public class Expense : BaseEntity
 {
-  public int PaymentCategoryId {get; set;}
-  public int StaffId {get; set;}
-  public DemandState Demand {get; set;}
-  public virtual Staff Staff {get; set;}
-  public virtual PaymentCategory PaymentCategory {get; set;}
-  public virtual ExpenseDetail ExpenseDetail {get; set;}
+  public int PaymentCategoryId { get; set; }
+  public int StaffId { get; set; }
+  public string RejectDescription { get; set; }
+  public DemandState Demand { get; set; }
+  public virtual Staff Staff { get; set; }
+  public virtual PaymentCategory PaymentCategory { get; set; }
+  public virtual ExpenseDetail ExpenseDetail { get; set; }
+  public virtual Payment Payment { get; set; }
 }
 public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
 {
@@ -28,12 +30,18 @@ public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
 
         builder.Property(x => x.PaymentCategoryId).IsRequired(true);
         builder.Property(x => x.StaffId).IsRequired(true);
-        
-        builder.HasOne(x => x.ExpenseDetail)
-          .WithOne(x => x.Expense)
-          .HasForeignKey<ExpenseDetail>(x => x.ExpenseId)
-          .IsRequired(true)
-          .OnDelete(DeleteBehavior.Cascade);
 
-    }    
+    builder.HasOne(x => x.Payment)
+      .WithOne(x => x.Expense)
+      .HasForeignKey<Payment>(x => x.ExpenseId)
+      .IsRequired(true)
+      .OnDelete(DeleteBehavior.Restrict);
+
+    builder.HasOne(x => x.ExpenseDetail)
+              .WithOne(x => x.Expense)
+              .HasForeignKey<ExpenseDetail>(x => x.ExpenseId)
+              .IsRequired(true)
+              .OnDelete(DeleteBehavior.Cascade);
+
+  }
 }

@@ -13,7 +13,7 @@ public class ExpenseCommandHandler :
 IRequestHandler<CreateExpenseCommand, ApiResponse<ExpenseResponse>>,
 IRequestHandler<CreateExpenseListCommand, ApiResponse<List<ExpenseResponse>>>,
 IRequestHandler<UpdateExpenseCommand, ApiResponse>,
-IRequestHandler<UpdateExpenseDemandCommand, ApiResponse>,
+IRequestHandler<ApproveOrRejectExpenseCommand, ApiResponse>,
 IRequestHandler<DeleteExpenseCommand, ApiResponse>
 {
     private readonly IUnitOfWork unitOfWork;
@@ -96,7 +96,7 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
     }
 
     // buranın yetkisi adminde 
-    public async Task<ApiResponse> Handle(UpdateExpenseDemandCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(ApproveOrRejectExpenseCommand request, CancellationToken cancellationToken)
     {
         var entity = await unitOfWork.ExpenseRepository.GetExpenseWithDetailByIdAsync(request.Id);
         if (entity == null || !entity.IsActive)
@@ -106,7 +106,7 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
         if (personnelExistUser == null)
             return new ApiResponse(UnauthorizedMessage);
 
-        if (!Enum.TryParse<DemandState>(request.UpdateExpenseDemandRequest.DemandState.ToString(), out var demandState))
+        if (!Enum.TryParse<DemandState>(request.approveOrRejectExpense.DemandState.ToString(), out var demandState))
             return new ApiResponse(InvalidStateMessage);
 
         entity.Demand = demandState;
@@ -118,7 +118,7 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
             return await HandleApproval(entity, personnelExistUser);
 
         if (demandState == DemandState.Reddedildi)
-            entity.ExpenseDetail.Description = request.UpdateExpenseDemandRequest.Description;
+            entity.RejectDescription = request.approveOrRejectExpense.Description;
 
         unitOfWork.ExpenseRepository.Update(entity);
         await unitOfWork.Complete();
@@ -147,7 +147,20 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
     private async Task<ApiResponse> HandleApproval(Expense entity, Personnel personnel)
     {
         var result = await paymentService.SimulatePaymentAsync(entity.ExpenseDetail.Amount, personnel.FirstName, personnel.LastName);
-        return result.Success ? new ApiResponse() : new ApiResponse($"Payment failed: {result.Message}");
+        if (result.Success)
+        {
+            var mapped = new Payment
+            {
+                ExpenseId = entity.Id,
+                PaymentDate = DateTime.Now
+            };
+            var payment = await unitOfWork.PaymentRepository.AddAsync(mapped);
+            await unitOfWork.Complete();
+
+            return payment != null ? new ApiResponse() : new ApiResponse($"Payment not Registered");
+        }
+        else
+            return new ApiResponse($"Payment failed: {result.Message}");
     }
 
 }

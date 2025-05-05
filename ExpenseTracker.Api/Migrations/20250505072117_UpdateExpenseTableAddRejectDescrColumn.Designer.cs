@@ -4,6 +4,7 @@ using ExpenseTracker.Api.DbOperations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpenseTracker.Api.Migrations
 {
     [DbContext(typeof(ExpenseTrackDbContext))]
-    partial class ExpenseTrackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250505072117_UpdateExpenseTableAddRejectDescrColumn")]
+    partial class UpdateExpenseTableAddRejectDescrColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

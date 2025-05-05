@@ -68,10 +68,10 @@ public class ExpenseController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPatch("{id}")]
-    public async Task<IActionResult> Put([FromRoute] int id, [FromBody] UpdateExpenseDemandRequest UpdateExpenseDemandRequest)
+    [HttpPatch("ApproveOrReject/{id}")]
+    public async Task<IActionResult> Put([FromRoute] int id, [FromBody] ApproveOrRejectExpenseRequest approveOrRejectExpense)
     {
-        var operation = new UpdateExpenseDemandCommand(id, UpdateExpenseDemandRequest);
+        var operation = new ApproveOrRejectExpenseCommand(id, approveOrRejectExpense);
         var result = await mediator.Send(operation);
         return Ok(result);
     }

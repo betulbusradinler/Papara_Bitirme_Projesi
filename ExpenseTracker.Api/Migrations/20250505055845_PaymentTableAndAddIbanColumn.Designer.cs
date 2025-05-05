@@ -4,6 +4,7 @@ using ExpenseTracker.Api.DbOperations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpenseTracker.Api.Migrations
 {
     [DbContext(typeof(ExpenseTrackDbContext))]
-    partial class ExpenseTrackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250505055845_PaymentTableAndAddIbanColumn")]
+    partial class PaymentTableAndAddIbanColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,10 +89,6 @@ namespace ExpenseTracker.Api.Migrations
 
                     b.Property<int>("PaymentCategoryId")
                         .HasColumnType("int");
-
-                    b.Property<string>("RejectDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StaffId")
                         .HasColumnType("int");
