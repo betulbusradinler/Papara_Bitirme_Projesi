@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using ExpenseTracker.Schema;
 using ExpenseTracker.Api.Impl.Cqrs;
 using Microsoft.AspNetCore.Authorization;
+using System.Drawing;
 
 namespace ExpenseTracker.Api;
 
-[Authorize]
+//[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class PersonnelController : ControllerBase
@@ -18,15 +19,20 @@ public class PersonnelController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
-        return Ok("test");
-    }   
-    
+        var operation = new GetAllPersonnelQuery();
+        var result = await _mediator.Send(operation);
+        return Ok(result);
+    }
+
+
     [HttpGet("{id}")]
-    public IActionResult GetPersonnelById(int Id)
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        return Ok("test");
+        var operation = new GetPersonnelByIdQuery(id);
+        var result = await _mediator.Send(operation);
+        return Ok(result);
     }
 
 
@@ -41,16 +47,16 @@ public class PersonnelController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Put([FromRoute] int id, [FromBody] PersonnelRequest personnelRequest)
     {
-        // var operation = new UpdatePersonnelCommand(id,personnelRequest);
-        // var result = await _mediator.Send(operation);
-        return Ok("test");
+        var operation = new UpdatePersonnelCommand(id, personnelRequest);
+        var result = await _mediator.Send(operation);
+        return Ok(result);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
-        // var operation = new DeletePaymentCategoryCommand(id);
-        // var result = await _mediator.Send(operation);
-        return Ok("result");
+        var operation = new DeletePersonnelCommand(id);
+        var result = await _mediator.Send(operation);
+        return Ok(result);
     }
 }

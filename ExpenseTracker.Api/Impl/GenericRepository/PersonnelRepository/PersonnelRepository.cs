@@ -23,6 +23,16 @@ namespace ExpenseTracker.Api.Impl.GenericRepository.PersonnelRepository
             query = includes.Aggregate(query, (current, inc) => EntityFrameworkQueryableExtensions.Include(current, inc));
             return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query, x => x.UserName == UserName);
         }
+        public async Task<Personnel> GetPersonnelDetailById(int Id, params string[] includes)
+        {
+            var query = dbContext.Set<Personnel>()
+                .Include(p => p.PersonnelAddresses)
+                .Include(p => p.PersonnelPhones)
+                .AsQueryable();
+
+            query = includes.Aggregate(query, (current, inc) => EntityFrameworkQueryableExtensions.Include(current, inc));
+            return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query, x => x.Id == Id);
+        }
 
     }
 }

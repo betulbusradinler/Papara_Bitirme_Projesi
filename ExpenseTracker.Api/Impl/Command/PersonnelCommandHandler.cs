@@ -1,7 +1,6 @@
 using AutoMapper;
 using MediatR;
 using ExpenseTracker.Api.Domain;
-using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Impl.Cqrs;
 using ExpenseTracker.Api.Impl.UnitOfWork;
 using ExpenseTracker.Base;
@@ -32,7 +31,7 @@ IRequestHandler<DeletePersonnelCommand, ApiResponse>
         var mapped = mapper.Map<Personnel>(request.PersonnelRequest);  
 
         var entity = await unitOfWork.PersonnelRepository.AddAsync(mapped);
-
+        await unitOfWork.Complete();
         var response = mapper.Map<PersonnelResponse>(entity);
 
         return new ApiResponse();
@@ -60,14 +59,13 @@ IRequestHandler<DeletePersonnelCommand, ApiResponse>
 
     public async Task<ApiResponse> Handle(DeletePersonnelCommand request, CancellationToken cancellationToken)
     {
-        var entity = await unitOfWork.PersonnelAddressRepository.GetByIdAsync(request.Id);
-        if (entity == null)
-            return new ApiResponse("PersonnelAddress not found");
+        var entity = await unitOfWork.PersonnelRepository.GetByIdAsync(request.Id);
+        if (entity == null || !entity.IsActive)
+            return new ApiResponse("Personnel not found");
 
-        if (!entity.IsActive)
-            return new ApiResponse("Personnel is not active");
+        entity.IsActive = false;
 
-        unitOfWork.PersonnelAddressRepository.Update(entity);
+        unitOfWork.PersonnelRepository.Update(entity);
         await unitOfWork.Complete();
         
         return new ApiResponse();

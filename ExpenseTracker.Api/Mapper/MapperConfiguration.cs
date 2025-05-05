@@ -16,9 +16,12 @@ public class MapperConfiguration:Profile
         CreateMap<PersonnelAddress, PersonnelAddressResponse>();
 
         CreateMap<PersonnelPhoneRequest, PersonnelPhone>();
-        CreateMap<PersonnelPhone, PersonnelPhoneRequest>();
+        CreateMap<PersonnelPhone, PersonnelPhoneResponse>();
 
-        CreateMap<Personnel, PersonnelResponse>();
+        CreateMap<Personnel, PersonnelResponse>()
+             .ForMember(dest => dest.PersonnelAddressResponses, opt => opt.MapFrom(src => src.PersonnelAddresses))
+             .ForMember(dest => dest.PersonnelPhoneResponses, opt => opt.MapFrom(src => src.PersonnelPhones));
+
 
         CreateMap<ExpenseRequest, Expense>()
             .ForMember(dest=>dest.ExpenseDetail, opt=>opt.MapFrom(src=>
