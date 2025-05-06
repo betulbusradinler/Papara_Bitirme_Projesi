@@ -1,8 +1,7 @@
-namespace ExpenseTracker.Api.Validation;
-
 using ExpenseTracker.Schema;
 using FluentValidation;
 
+namespace ExpenseTracker.Api.Validation;
 public class PaymentCategoryRequestValidator : AbstractValidator<PaymentCategoryRequest>
 {
     public PaymentCategoryRequestValidator()

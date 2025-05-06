@@ -1,4 +1,3 @@
-using ExpenseTracker.Api.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Api.DbOperations;
@@ -6,42 +5,6 @@ public static class DbInitializer
 {
     public static async Task InitializeAsync(ExpenseTrackDbContext context)
     {
-        if (context.Personnels.Any())
-        {
-            return;
-        }
-
-        await context.Personnels.AddRangeAsync(
-            new Personnel
-            {
-                Role = "Admin",
-                UserName = "admin",
-                FirstName = "Admin",
-                LastName = "User",
-                Email = "admin@admin.com",
-                Iban = "TR1234567890",
-                OpenDate = DateTime.Now,
-                CreatedDate = DateTime.Now,
-                CreatedUser = "System",
-                IsActive = true
-            },
-            new Personnel
-            {
-                Role = "Personnel",
-                UserName = "personel",
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "personel@personel.com",
-                Iban = "TR0987654321",
-                OpenDate = DateTime.Now,
-                CreatedDate = DateTime.Now,
-                CreatedUser = "System",
-                IsActive = true
-            }
-        );
-
-        await context.SaveChangesAsync();
-
         var personnelExpenseView = @"
             IF NOT EXISTS (SELECT * FROM sys.views WHERE name = 'vw_PersonnelExpenses')
                 BEGIN

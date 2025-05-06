@@ -1,8 +1,6 @@
 using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Api.Domain;
-using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Impl.Cqrs;
 using ExpenseTracker.Base;
 using ExpenseTracker.Schema;

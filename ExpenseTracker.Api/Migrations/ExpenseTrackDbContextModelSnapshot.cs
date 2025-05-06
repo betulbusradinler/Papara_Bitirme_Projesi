@@ -17,7 +17,7 @@ namespace ExpenseTracker.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -107,7 +107,7 @@ namespace ExpenseTracker.Api.Migrations
 
                     b.HasIndex("StaffId");
 
-                    b.ToTable("Expenses");
+                    b.ToTable("Expenses", (string)null);
                 });
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.ExpenseDetail", b =>
@@ -169,7 +169,7 @@ namespace ExpenseTracker.Api.Migrations
                     b.HasIndex("ExpenseId")
                         .IsUnique();
 
-                    b.ToTable("ExpenseDetails");
+                    b.ToTable("ExpenseDetails", (string)null);
                 });
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.Payment", b =>
@@ -211,7 +211,7 @@ namespace ExpenseTracker.Api.Migrations
                     b.HasIndex("ExpenseId")
                         .IsUnique();
 
-                    b.ToTable("Payment");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.PaymentCategory", b =>
@@ -249,7 +249,7 @@ namespace ExpenseTracker.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentCategories");
+                    b.ToTable("PaymentCategories", (string)null);
                 });
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.Personnel", b =>
@@ -321,11 +321,41 @@ namespace ExpenseTracker.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Personnels");
+                    b.ToTable("Personnels", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Personnel");
 
                     b.UseTphMappingStrategy();
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            CreatedDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5180),
+                            CreatedUser = "System",
+                            Email = "admin@admin.com",
+                            FirstName = "Admin",
+                            Iban = "TR1234567890",
+                            IsActive = true,
+                            LastName = "User",
+                            OpenDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5150),
+                            Role = "Admin",
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = -2,
+                            CreatedDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5190),
+                            CreatedUser = "System",
+                            Email = "personel@personel.com",
+                            FirstName = "John",
+                            Iban = "TR0987654321",
+                            IsActive = true,
+                            LastName = "Doe",
+                            OpenDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5190),
+                            Role = "Personnel",
+                            UserName = "personel"
+                        });
                 });
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.PersonnelAddress", b =>
@@ -391,7 +421,7 @@ namespace ExpenseTracker.Api.Migrations
 
                     b.HasIndex("PersonnelId");
 
-                    b.ToTable("PersonnelAddresses");
+                    b.ToTable("PersonnelAddresses", (string)null);
                 });
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.PersonnelPassword", b =>
@@ -438,7 +468,7 @@ namespace ExpenseTracker.Api.Migrations
                     b.HasIndex("PersonnelId")
                         .IsUnique();
 
-                    b.ToTable("PersonnelPassword");
+                    b.ToTable("PersonnelPassword", (string)null);
                 });
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.PersonnelPhone", b =>
@@ -489,7 +519,7 @@ namespace ExpenseTracker.Api.Migrations
 
                     b.HasIndex("PersonnelId");
 
-                    b.ToTable("PersonnelPhone");
+                    b.ToTable("PersonnelPhone", (string)null);
                 });
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.ExpenseManager", b =>

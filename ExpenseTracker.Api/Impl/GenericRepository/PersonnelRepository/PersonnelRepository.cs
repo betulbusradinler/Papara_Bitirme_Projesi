@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Domain;
 using Microsoft.EntityFrameworkCore;

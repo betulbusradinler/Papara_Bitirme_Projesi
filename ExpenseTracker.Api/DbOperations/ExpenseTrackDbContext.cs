@@ -18,6 +18,37 @@ public class ExpenseTrackDbContext:DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExpenseTrackDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Personnel>().HasData(
+           new Personnel
+           {
+               Id = -1,
+               Role = "Admin",
+               UserName = "admin",
+               FirstName = "Admin",
+               LastName = "User",
+               Email = "admin@admin.com",
+               Iban = "TR1234567890",
+               OpenDate = DateTime.Now,
+               CreatedDate = DateTime.Now,
+               CreatedUser = "System",
+               IsActive = true
+           },
+           new Personnel
+           {
+               Id = -2,
+               Role = "Personnel",
+               UserName = "personel",
+               FirstName = "John",
+               LastName = "Doe",
+               Email = "personel@personel.com",
+               Iban = "TR0987654321",
+               OpenDate = DateTime.Now,
+               CreatedDate = DateTime.Now,
+               CreatedUser = "System",
+               IsActive = true
+           }
+       );
     }
 
     public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

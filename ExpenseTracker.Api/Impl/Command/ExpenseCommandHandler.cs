@@ -20,7 +20,6 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
     private readonly IMapper mapper;
     private readonly IAppSession appSession;
     private readonly IPaymentService paymentService;
-    private const string UnauthorizedMessage = "Bu Apiye Erişim Yetkiniz Yok";
     private const string ExpenseNotFoundMessage = "Harcama bulunamadı veya aktif değil";
     private const string InvalidStateMessage = "Geçersiz Harcama Onaylama Değeri";
     private const string PaymentCategoryNotFoundMessage = "Geçersiz Harcama Onaylama Değeri";
@@ -33,10 +32,6 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
     }
     public async Task<ApiResponse<ExpenseResponse>> Handle(CreateExpenseCommand request, CancellationToken cancellationToken)
     {
-        var personnelExistUser = await GetCurrentPersonnelAsync();
-        if (personnelExistUser == null)
-            return new ApiResponse<ExpenseResponse>(UnauthorizedMessage, 401);
-
         var paymentCategoryExist = await unitOfWork.PaymentCategoryRepository.GetByIdAsync(request.ExpenseRequest.PaymentCategoryId);
         if (paymentCategoryExist == null)
             return new ApiResponse<ExpenseResponse>(ExpenseNotFoundMessage, 400);
@@ -68,10 +63,6 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
 
     public async Task<ApiResponse> Handle(UpdateExpenseCommand request, CancellationToken cancellationToken)
     {
-        var personnelExistUser = await GetCurrentPersonnelAsync();
-        if (personnelExistUser == null)
-            return new ApiResponse(UnauthorizedMessage, 401);
-
         var paymentCategoryExist = await unitOfWork.PaymentCategoryRepository.GetByIdAsync(request.ExpenseRequest.PaymentCategoryId);
         if (paymentCategoryExist == null)
             return new ApiResponse(PaymentCategoryNotFoundMessage, 400);
@@ -104,8 +95,6 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
             return new ApiResponse(ExpenseNotFoundMessage, 400);
 
         var personnelExistUser = await GetCurrentPersonnelAsync();
-        if (personnelExistUser == null)
-            return new ApiResponse(UnauthorizedMessage, 401);
 
         if (!Enum.TryParse<DemandState>(request.approveOrRejectExpense.DemandState.ToString(), out var demandState))
             return new ApiResponse(InvalidStateMessage, 400);

@@ -1,6 +1,5 @@
 using ExpenseTracker.Schema;
 using FluentValidation;
-
 public class PersonnelRequestValidator : AbstractValidator<PersonnelRequest>
 {
     public PersonnelRequestValidator()

@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpenseTracker.Api.Migrations
 {
     [DbContext(typeof(ExpenseTrackDbContext))]
-    [Migration("20250504063517_DropTableDemands")]
-    partial class DropTableDemands
+    [Migration("20250506220811_InitialMigrations")]
+    partial class InitialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -89,6 +89,10 @@ namespace ExpenseTracker.Api.Migrations
 
                     b.Property<int>("PaymentCategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("RejectDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StaffId")
                         .HasColumnType("int");
@@ -171,6 +175,48 @@ namespace ExpenseTracker.Api.Migrations
                     b.ToTable("ExpenseDetails");
                 });
 
+            modelBuilder.Entity("ExpenseTracker.Api.Domain.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedUser")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("ExpenseId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedUser")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpenseId")
+                        .IsUnique();
+
+                    b.ToTable("Payments");
+                });
+
             modelBuilder.Entity("ExpenseTracker.Api.Domain.PaymentCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -240,6 +286,10 @@ namespace ExpenseTracker.Api.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Iban")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -279,6 +329,36 @@ namespace ExpenseTracker.Api.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("Personnel");
 
                     b.UseTphMappingStrategy();
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            CreatedDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5180),
+                            CreatedUser = "System",
+                            Email = "admin@admin.com",
+                            FirstName = "Admin",
+                            Iban = "TR1234567890",
+                            IsActive = true,
+                            LastName = "User",
+                            OpenDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5150),
+                            Role = "Admin",
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = -2,
+                            CreatedDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5190),
+                            CreatedUser = "System",
+                            Email = "personel@personel.com",
+                            FirstName = "John",
+                            Iban = "TR0987654321",
+                            IsActive = true,
+                            LastName = "Doe",
+                            OpenDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5190),
+                            Role = "Personnel",
+                            UserName = "personel"
+                        });
                 });
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.PersonnelAddress", b =>
@@ -489,6 +569,17 @@ namespace ExpenseTracker.Api.Migrations
                     b.Navigation("Expense");
                 });
 
+            modelBuilder.Entity("ExpenseTracker.Api.Domain.Payment", b =>
+                {
+                    b.HasOne("ExpenseTracker.Api.Domain.Expense", "Expense")
+                        .WithOne("Payment")
+                        .HasForeignKey("ExpenseTracker.Api.Domain.Payment", "ExpenseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Expense");
+                });
+
             modelBuilder.Entity("ExpenseTracker.Api.Domain.PersonnelAddress", b =>
                 {
                     b.HasOne("ExpenseTracker.Api.Domain.Personnel", "Personnel")
@@ -525,6 +616,9 @@ namespace ExpenseTracker.Api.Migrations
             modelBuilder.Entity("ExpenseTracker.Api.Domain.Expense", b =>
                 {
                     b.Navigation("ExpenseDetail")
+                        .IsRequired();
+
+                    b.Navigation("Payment")
                         .IsRequired();
                 });
 

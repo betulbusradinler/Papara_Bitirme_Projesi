@@ -3,30 +3,37 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ExpenseTracker.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigraitons : Migration
+    public partial class InitialMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "dbo");
+
             migrationBuilder.CreateTable(
-                name: "Demands",
+                name: "AuditLog",
+                schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IsState = table.Column<int>(type: "int", nullable: false),
-                    CreatedUser = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    UpdatedUser = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    EntityName = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    EntityId = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    Action = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    ChangedValues = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OriginalValues = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Demands", x => x.Id);
+                    table.PrimaryKey("PK_AuditLog", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,10 +60,14 @@ namespace ExpenseTracker.Api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Iban = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OpenDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastLoginDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     CreatedUser = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     UpdatedUser = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
@@ -77,7 +88,8 @@ namespace ExpenseTracker.Api.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PaymentCategoryId = table.Column<int>(type: "int", nullable: false),
                     StaffId = table.Column<int>(type: "int", nullable: false),
-                    DemandId = table.Column<int>(type: "int", nullable: false),
+                    RejectDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Demand = table.Column<int>(type: "int", nullable: false),
                     CreatedUser = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     UpdatedUser = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
@@ -87,12 +99,6 @@ namespace ExpenseTracker.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Expenses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Expenses_Demands_DemandId",
-                        column: x => x.DemandId,
-                        principalTable: "Demands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Expenses_PaymentCategories_PaymentCategoryId",
                         column: x => x.PaymentCategoryId,
@@ -138,7 +144,33 @@ namespace ExpenseTracker.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PersonnelPhones",
+                name: "PersonnelPassword",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Secret = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PersonnelId = table.Column<int>(type: "int", nullable: false),
+                    CreatedUser = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    UpdatedUser = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonnelPassword", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PersonnelPassword_Personnels_PersonnelId",
+                        column: x => x.PersonnelId,
+                        principalTable: "Personnels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PersonnelPhone",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -155,9 +187,9 @@ namespace ExpenseTracker.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonnelPhones", x => x.Id);
+                    table.PrimaryKey("PK_PersonnelPhone", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PersonnelPhones_Personnels_PersonnelId",
+                        name: "FK_PersonnelPhone_Personnels_PersonnelId",
                         column: x => x.PersonnelId,
                         principalTable: "Personnels",
                         principalColumn: "Id",
@@ -171,7 +203,7 @@ namespace ExpenseTracker.Api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ExpenseId = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     PaymentPoint = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PaymentInstrument = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -193,15 +225,44 @@ namespace ExpenseTracker.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ExpenseId = table.Column<int>(type: "int", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedUser = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    UpdatedUser = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_Expenses_ExpenseId",
+                        column: x => x.ExpenseId,
+                        principalTable: "Expenses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Personnels",
+                columns: new[] { "Id", "CreatedDate", "CreatedUser", "Discriminator", "Email", "FirstName", "Iban", "IsActive", "LastLoginDate", "LastName", "OpenDate", "Role", "UpdatedDate", "UpdatedUser", "UserName" },
+                values: new object[,]
+                {
+                    { -2, new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5190), "System", "Personnel", "personel@personel.com", "John", "TR0987654321", true, null, "Doe", new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5190), "Personnel", null, null, "personel" },
+                    { -1, new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5180), "System", "Personnel", "admin@admin.com", "Admin", "TR1234567890", true, null, "User", new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5150), "Admin", null, null, "admin" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ExpenseDetails_ExpenseId",
                 table: "ExpenseDetails",
-                column: "ExpenseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Expenses_DemandId",
-                table: "Expenses",
-                column: "DemandId",
+                column: "ExpenseId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -215,13 +276,25 @@ namespace ExpenseTracker.Api.Migrations
                 column: "StaffId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_ExpenseId",
+                table: "Payments",
+                column: "ExpenseId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersonnelAddresses_PersonnelId",
                 table: "PersonnelAddresses",
                 column: "PersonnelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersonnelPhones_PersonnelId",
-                table: "PersonnelPhones",
+                name: "IX_PersonnelPassword_PersonnelId",
+                table: "PersonnelPassword",
+                column: "PersonnelId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonnelPhone_PersonnelId",
+                table: "PersonnelPhone",
                 column: "PersonnelId");
         }
 
@@ -229,19 +302,26 @@ namespace ExpenseTracker.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AuditLog",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
                 name: "ExpenseDetails");
+
+            migrationBuilder.DropTable(
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "PersonnelAddresses");
 
             migrationBuilder.DropTable(
-                name: "PersonnelPhones");
+                name: "PersonnelPassword");
+
+            migrationBuilder.DropTable(
+                name: "PersonnelPhone");
 
             migrationBuilder.DropTable(
                 name: "Expenses");
-
-            migrationBuilder.DropTable(
-                name: "Demands");
 
             migrationBuilder.DropTable(
                 name: "PaymentCategories");

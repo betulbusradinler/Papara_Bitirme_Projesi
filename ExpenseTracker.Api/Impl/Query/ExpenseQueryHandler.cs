@@ -19,8 +19,6 @@ IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
       private readonly IMapper mapper;
 
       private const string ExpenseNotFoundMessage = "Harcama bulunamadı veya aktif değil";
-      private const string InvalidStateMessage = "Geçersiz Harcama Onaylama Değeri";
-      private const string PaymentCategoryNotFoundMessage = "Geçersiz Harcama Onaylama Değeri";
       public ExpenseQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IAppSession appSession)
       {
             this.appSession = appSession;
@@ -28,11 +26,11 @@ IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
             this.mapper = mapper;
       }
 
-      // Admin Tüm Harcamaları bu method ile görür
       public async Task<ApiResponse<List<ExpenseResponse>>> Handle(GetAllExpenseQuery request, CancellationToken cancellationToken)
       {
             var entity = await unitOfWork.ExpenseRepository.GetAllExpensesWithExpenseDetail();
             entity.RemoveAll(p => p.IsActive == false);
+
             if (entity.Count <= 0)
                   return new ApiResponse<List<ExpenseResponse>>(ExpenseNotFoundMessage, 400);
 
@@ -40,14 +38,10 @@ IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
             return new ApiResponse<List<ExpenseResponse>>(mapped);
       }
 
-      // Kullanıcı Yaptığı Tüm Harcamaları Burada Listeler.
       public async Task<ApiResponse<List<ExpenseResponse>>> Handle(GetAllPersonnelExpenseQuery request, CancellationToken cancellationToken)
       {
             int convertPersonnelId = Convert.ToInt32(appSession.PersonnelId);
             var entity = await unitOfWork.ExpenseRepository.GetAllExpensesByPersonnelIdAsync(convertPersonnelId);
-
-            if (convertPersonnelId <= 0)
-                  return new ApiResponse<List<ExpenseResponse>>("Bu Api ye erişim yetkiniz yok", 401);
 
             entity.RemoveAll(p => p.IsActive == false);
             if (entity.Count <= 0)
@@ -70,8 +64,6 @@ IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
       public async Task<ApiResponse<List<ExpenseResponse>>> Handle(GetFilteredExpensesQuery request, CancellationToken cancellationToken)
       {
             int personnelId = Convert.ToInt32(appSession.PersonnelId);
-            if (personnelId <= 0)
-                  return new ApiResponse<List<ExpenseResponse>>("Bu Api ye erişim yetkiniz yok", 401);
 
             var query = unitOfWork.ExpenseRepository.GetActiveExpensesByPersonnelId(personnelId);
 
