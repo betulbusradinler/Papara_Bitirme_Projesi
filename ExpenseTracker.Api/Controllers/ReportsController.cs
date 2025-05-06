@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ExpenseTracker.Base;
 using ExpenseTracker.Api.Impl.Cqrs;
 using ExpenseTracker.Schema;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExpenseTracker.Api.Controller;
 
@@ -16,7 +17,8 @@ public class ReportsController : ControllerBase
         this.mediator = mediator;
     }
 
-    [HttpGet("personnel")]
+    [Authorize(Roles = "Personnel")]
+    [HttpGet("me")]
     public async Task<IActionResult> GetPersonnelReport()
     {
         var operation = new GetPersonnelExpenseReportQuery();
@@ -26,6 +28,7 @@ public class ReportsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("CompanyPayment")]
     public async Task<IActionResult> GetPaymentSummary([FromQuery] PaymentSummaryRequest request)
     {
@@ -36,8 +39,9 @@ public class ReportsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("ExpenseSummary")]
-    public async Task<IActionResult> GetExpenseSummary([FromQuery] ExpenseSummaryRequest request)
+    public async Task<IActionResult> GetExpenseSummary([FromQuery] ExpenseSummaryReportRequest request)
     {
         var operation = new GetAllExpenseReportQuery(request);
         var result = await mediator.Send(operation);

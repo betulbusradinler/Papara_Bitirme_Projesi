@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using ExpenseTracker.Api.Validation;
 using MediatR;
 using FluentValidation.AspNetCore;
+using ExpenseTracker.Api.Impl.Middleware;
 
 namespace ExpenseTracker.Api;
 public class Startup
@@ -121,6 +122,7 @@ public class Startup
 
         }
 
+        app.UseMiddleware<ErrorHandlerMiddleware>();
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseRouting();

@@ -25,7 +25,7 @@ public class PersonnelAddressController : ControllerBase
     }   
     
     [HttpGet("{id}")]
-    public IActionResult GetPersonnelAddressById(int Id)
+    public IActionResult GetPersonnelAddressById(int id)
     {
         return Ok("test");
     }

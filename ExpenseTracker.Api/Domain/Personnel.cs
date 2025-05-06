@@ -35,8 +35,6 @@ public class PersonnelConfiguration : IEntityTypeConfiguration<Personnel>
         builder.Property(x => x.Email).IsRequired().HasMaxLength(100);
         builder.Property(x => x.FirstName).IsRequired().HasMaxLength(50);
         builder.Property(x => x.LastName).IsRequired().HasMaxLength(50);
-        // builder.Property(x => x.Password).IsRequired().HasMaxLength(100);
-        // builder.Property(x => x.Secret).IsRequired().HasMaxLength(100);
         builder.Property(x => x.OpenDate).IsRequired(true);
 
 
@@ -50,12 +48,6 @@ public class PersonnelConfiguration : IEntityTypeConfiguration<Personnel>
 
         builder.HasOne(x => x.PersonnelPassword)
             .WithOne(x => x.Personnel)
-            .HasForeignKey<PersonnelPassword>(x=>x.PersonnelId).IsRequired(true).OnDelete(DeleteBehavior.Cascade);
-/*
-        builder.HasMany(x => x.Accounts)
-            .WithOne(x => x.Personnel)
-            .HasForeignKey(x => x.PersonnelId).IsRequired(true).OnDelete(DeleteBehavior.Cascade);
-
-*/
+            .HasForeignKey<PersonnelPassword>(x => x.PersonnelId).IsRequired(true).OnDelete(DeleteBehavior.Cascade);
     }
 }

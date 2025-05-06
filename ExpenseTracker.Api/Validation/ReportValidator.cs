@@ -24,23 +24,6 @@ public class PersonnelExpenseReportDtoValidator : AbstractValidator<PersonnelExp
             .LessThanOrEqualTo(DateTime.Today);
     }
 }
-public class ExpenseSummaryRequestValidator : AbstractValidator<ExpenseSummaryRequest>
-{
-    public ExpenseSummaryRequestValidator()
-    {
-        RuleFor(x => x.ReportType)
-            .NotEmpty();
-        RuleFor(x => x.StartDate)
-            .LessThanOrEqualTo(DateTime.Today)
-            .When(x => x.StartDate.HasValue);
-        RuleFor(x => x.EndDate)
-            .LessThanOrEqualTo(DateTime.Today)
-            .When(x => x.EndDate.HasValue);
-        RuleFor(x => x)
-            .Must(x => !(x.StartDate.HasValue && x.EndDate.HasValue) || x.StartDate <= x.EndDate);
-    }
-}
-
 public class PaymentSummaryRequestValidator : AbstractValidator<PaymentSummaryRequest>
 {
     public PaymentSummaryRequestValidator()
@@ -55,3 +38,20 @@ public class PaymentSummaryRequestValidator : AbstractValidator<PaymentSummaryRe
             .Must(x => !(x.StartDate.HasValue && x.EndDate.HasValue) || x.StartDate <= x.EndDate);
     }
 }
+public class ExpenseSummaryRequestValidator : AbstractValidator<ExpenseSummaryReportRequest>
+{
+    public ExpenseSummaryRequestValidator()
+    {
+        RuleFor(x => x.ReportType)
+            .IsInEnum().WithMessage("Geçersiz rapor tipi.");
+
+        RuleFor(x => x.StartDate)
+            .NotEmpty().WithMessage("Başlangıç tarihi zorunludur.");
+
+        RuleFor(x => x.EndDate)
+            .NotEmpty().WithMessage("Bitiş tarihi zorunludur.")
+            .GreaterThanOrEqualTo(x => x.StartDate)
+            .WithMessage("Bitiş tarihi başlangıç tarihinden küçük olamaz.");
+    }
+}
+

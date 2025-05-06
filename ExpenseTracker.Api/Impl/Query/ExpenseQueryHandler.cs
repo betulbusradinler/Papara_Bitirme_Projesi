@@ -4,9 +4,7 @@ using ExpenseTracker.Base;
 using ExpenseTracker.Schema;
 using ExpenseTracker.Api.Impl.Cqrs;
 using ExpenseTracker.Api.Impl.UnitOfWork;
-using ExpenseTracker.Api.Domain;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace ExpenseTracker.Api.Impl.Query;
 

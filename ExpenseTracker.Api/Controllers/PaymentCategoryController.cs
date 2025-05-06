@@ -4,16 +4,16 @@ using ExpenseTracker.Schema;
 using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Impl.Cqrs;
 using ExpenseTracker.Api.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExpenseTracker.Api;
 
-// [Authorize(Roles = "admin")]
+
+[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/[controller]")]
 public class PaymentCategoryController : ControllerBase
 {
-    // BURADA YÖNETİCİ İZNİ OLCAK. USER ROLE ADMINSE BU İŞLEMLERİ YAPABİLECEK
-    
     private readonly IMediator _mediator;
     public PaymentCategoryController(IMediator mediator)
     {

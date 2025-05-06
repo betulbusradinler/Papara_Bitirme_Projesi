@@ -28,23 +28,28 @@ public class PaymentSummaryRequest
     public DateTime? EndDate { get; set; }
 }
 
-public class ExpenseSummaryRequest
+
+public class ExpenseSummaryReportRequest
 {
-    public string ReportType { get; set; }
+    public ReportType ReportType { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
 }
 
-public class ExpenseSummaryResponse
+public class ExpenseSummaryReportResponse
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string PaymentCategoryName { get; set; }
-    public string RejectDescription { get; set; }
-    public string Demand { get; set; }
-    public decimal Amount { get; set; }
-    public string PaymentPoint { get; set; }
-    public string PaymentInstrument { get; set; }
-    public string Receipt { get; set; }
+    public string DemandState { get; set; }
+    public string CategoryName { get; set; }
+    public decimal SumExpense { get; set; }
+    public int Weekly { get; set; }
+    public int Monthly { get; set; }
+    public int Year { get; set; }
+    public DateTime Daily { get; set; }
 
+}
+
+public enum ReportType
+{
+    Daily = 1,
+    WeeklyAndMonthly = 2
 }

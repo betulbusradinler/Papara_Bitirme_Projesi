@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ExpenseTracker.Schema;
 using ExpenseTracker.Api.Impl.Cqrs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExpenseTracker.Api;
 
@@ -15,7 +16,7 @@ public class ExpenseController : ControllerBase
         this.mediator = mediator;
     }
 
-    // [Authorize(Role="Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpGet(Name = "GetExpenseDemands")]
     public async Task<IActionResult> Get()
     {
@@ -26,8 +27,8 @@ public class ExpenseController : ControllerBase
         return Ok(result);
     }
 
-    // [Authorize(Role="Admin")] ????????
-    [HttpGet("PersonnelId")]
+    [Authorize(Roles = "Personnel")]
+    [HttpGet("me")]
     public async Task<IActionResult> GetExpenseById()
     {
         var operation = new GetAllPersonnelExpenseQuery();
@@ -37,7 +38,7 @@ public class ExpenseController : ControllerBase
         return Ok(result);
     }
 
-    //[Authorize(Role="Personnel")]
+    [Authorize(Roles = "Personnel")]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] ExpenseRequest ExpenseRequest)
     {
@@ -48,8 +49,8 @@ public class ExpenseController : ControllerBase
         return Ok(result);
     }
 
-    //[Authorize(Role="Personnel")]
     [NonAction]
+    [Authorize(Roles = "Personnel")]
     [HttpPost("AddExpenseList")]
     public async Task<IActionResult> ExpenseListPost([FromBody] List<ExpenseRequest> ExpenseRequests)
     {
@@ -60,6 +61,7 @@ public class ExpenseController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Personnel")]
     [HttpPost("filter")]
     public async Task<IActionResult> GetFilteredExpenses([FromBody] ExpenseFilterRequest filter)
     {
@@ -70,6 +72,7 @@ public class ExpenseController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Personnel")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Put([FromRoute] int id, [FromBody] ExpenseRequest ExpenseRequest)
     {
@@ -80,6 +83,7 @@ public class ExpenseController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPatch("ApproveOrReject/{id}")]
     public async Task<IActionResult> Put([FromRoute] int id, [FromBody] ApproveOrRejectExpenseRequest approveOrRejectExpense)
     {

@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using ExpenseTracker.Schema;
 using ExpenseTracker.Api.Impl.Cqrs;
 using Microsoft.AspNetCore.Authorization;
-using System.Drawing;
 
 namespace ExpenseTracker.Api;
 
-//[Authorize]
+[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/[controller]")]
 public class PersonnelController : ControllerBase

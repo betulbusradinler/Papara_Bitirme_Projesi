@@ -2,10 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ExpenseTracker.Schema;
 using ExpenseTracker.Base;
-using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Impl.Cqrs;
-using ExpenseTracker.Api.Domain;
-
 namespace ExpenseTracker.Api.Controller;
 
 [ApiController]

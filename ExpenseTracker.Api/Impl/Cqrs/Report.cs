@@ -6,5 +6,5 @@ namespace ExpenseTracker.Api.Impl.Cqrs;
 
 public record GetPersonnelExpenseReportQuery : IRequest<ApiResponse<List<PersonnelExpenseReportDto>>>;
 public record GetCompanyPaymentReportQuery(PaymentSummaryRequest PaymentSummary) : IRequest<ApiResponse<List<PaymentSummaryResponse>>>;
-public record GetAllExpenseReportQuery(ExpenseSummaryRequest ExpenseSummary) : IRequest<ApiResponse<List<ExpenseSummaryResponse>>>;
+public record GetAllExpenseReportQuery(ExpenseSummaryReportRequest ExpenseSummary) : IRequest<ApiResponse<List<ExpenseSummaryReportResponse>>>;
 
