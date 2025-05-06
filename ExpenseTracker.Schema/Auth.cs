@@ -1,4 +1,3 @@
-
 namespace ExpenseTracker.Schema;
 
 public class AuthRequest

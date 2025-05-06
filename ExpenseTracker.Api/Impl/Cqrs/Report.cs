@@ -4,12 +4,7 @@ using MediatR;
 
 namespace ExpenseTracker.Api.Impl.Cqrs;
 
-public class Report
-{
-    public record GetAllReportQuery : IRequest<ApiResponse<List<ReportResponse>>>;
-    public record GetAllReportByIdQuery(int Id) : IRequest<ApiResponse<ReportResponse>>;
-    public record CreateReportCommand(ReportResponse Report) : IRequest<ReportResponse>;
-    public record UpdateReportCommand(int Id, ReportResponse Report) : IRequest<ApiResponse>;
-    public record DeleteReportCommand(int Id) : IRequest<ApiResponse>;
+public record GetPersonnelExpenseReportQuery : IRequest<ApiResponse<List<PersonnelExpenseReportDto>>>;
+public record GetCompanyPaymentReportQuery(PaymentSummaryRequest PaymentSummary) : IRequest<ApiResponse<List<PaymentSummaryResponse>>>;
+public record GetAllExpenseReportQuery(ExpenseSummaryRequest ExpenseSummary) : IRequest<ApiResponse<List<ExpenseSummaryResponse>>>;
 
-}

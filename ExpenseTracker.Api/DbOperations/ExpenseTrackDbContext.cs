@@ -85,4 +85,5 @@ public class ExpenseTrackDbContext:DbContext
     public DbSet<Personnel> Personnels { get; set; }
     public DbSet<PersonnelAddress> PersonnelAddresses { get; set; }
     public DbSet<Staff> Staffs { get; set; }
+    public DbSet<Payment> Payments { get; set; }
 }

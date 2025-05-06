@@ -25,6 +25,8 @@ public class PaymentCategoryController : ControllerBase
     {
         var operation = new GetAllPaymentCategoryQuery();
         var result = await _mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }   
     
@@ -33,6 +35,8 @@ public class PaymentCategoryController : ControllerBase
     {
         var operation = new GetPaymentCategoryByIdQuery(id);
         var result = await _mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -41,6 +45,8 @@ public class PaymentCategoryController : ControllerBase
     {
         var operation = new CreatePaymentCategoryCommand(PaymentCategoryRequest);
         var result = await _mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
     
@@ -49,6 +55,8 @@ public class PaymentCategoryController : ControllerBase
     {
         var operation = new UpdatePaymentCategoryCommand(id,paymentCategoryRequest);
         var result = await _mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -57,6 +65,8 @@ public class PaymentCategoryController : ControllerBase
     {
         var operation = new DeletePaymentCategoryCommand(id);
         var result = await _mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 }

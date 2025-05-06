@@ -20,6 +20,9 @@ IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
       private readonly IAppSession appSession;
       private readonly IMapper mapper;
 
+      private const string ExpenseNotFoundMessage = "Harcama bulunamadı veya aktif değil";
+      private const string InvalidStateMessage = "Geçersiz Harcama Onaylama Değeri";
+      private const string PaymentCategoryNotFoundMessage = "Geçersiz Harcama Onaylama Değeri";
       public ExpenseQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IAppSession appSession)
       {
             this.appSession = appSession;
@@ -33,7 +36,7 @@ IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
             var entity = await unitOfWork.ExpenseRepository.GetAllExpensesWithExpenseDetail();
             entity.RemoveAll(p => p.IsActive == false);
             if (entity.Count <= 0)
-                  return new ApiResponse<List<ExpenseResponse>>("Register Expense not found");
+                  return new ApiResponse<List<ExpenseResponse>>(ExpenseNotFoundMessage, 400);
 
             var mapped = mapper.Map<List<ExpenseResponse>>(entity);
             return new ApiResponse<List<ExpenseResponse>>(mapped);
@@ -46,11 +49,11 @@ IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
             var entity = await unitOfWork.ExpenseRepository.GetAllExpensesByPersonnelIdAsync(convertPersonnelId);
 
             if (convertPersonnelId <= 0)
-                  return new ApiResponse<List<ExpenseResponse>>("You do not have permission to access this endpoint.");
+                  return new ApiResponse<List<ExpenseResponse>>("Bu Api ye erişim yetkiniz yok", 401);
 
             entity.RemoveAll(p => p.IsActive == false);
             if (entity.Count <= 0)
-                  return new ApiResponse<List<ExpenseResponse>>("Register Expense not found");
+                  return new ApiResponse<List<ExpenseResponse>>(ExpenseNotFoundMessage, 400);
 
             var mapped = mapper.Map<List<ExpenseResponse>>(entity);
             return new ApiResponse<List<ExpenseResponse>>(mapped);
@@ -60,7 +63,7 @@ IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
       {
             var entity = await unitOfWork.ExpenseRepository.GetByIdAsync(request.Id);
             if (entity == null || entity.IsActive == false)
-                  return new ApiResponse<ExpenseResponse>("Expense not found");
+                  return new ApiResponse<ExpenseResponse>(ExpenseNotFoundMessage, 400);
 
             var mapped = mapper.Map<ExpenseResponse>(entity);
             return new ApiResponse<ExpenseResponse>(mapped);
@@ -70,17 +73,15 @@ IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
       {
             int personnelId = Convert.ToInt32(appSession.PersonnelId);
             if (personnelId <= 0)
-                  return new ApiResponse<List<ExpenseResponse>>("You are not authorized to perform this action.");
+                  return new ApiResponse<List<ExpenseResponse>>("Bu Api ye erişim yetkiniz yok", 401);
+
             var query = unitOfWork.ExpenseRepository.GetActiveExpensesByPersonnelId(personnelId);
 
             if (request.Filter.PaymentCategoryId.HasValue)
                   query = query.Where(x => x.PaymentCategoryId == request.Filter.PaymentCategoryId);
 
-            if (request.Filter.EndDate >= DateTime.Now)
-                  
-
             if (request.Filter.DemandState.HasValue)
-                        query = query.Where(x => (int)x.Demand == request.Filter.DemandState.Value);
+                  query = query.Where(x => (int)x.Demand == request.Filter.DemandState.Value);
 
             if (request.Filter.StartDate.HasValue)
                   query = query.Where(x => x.CreatedDate >= request.Filter.StartDate.Value);

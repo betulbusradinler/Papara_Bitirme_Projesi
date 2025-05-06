@@ -4,7 +4,6 @@ using ExpenseTracker.Api.Impl.Cqrs;
 using ExpenseTracker.Base;
 using ExpenseTracker.Schema;
 using ExpenseTracker.Api.Impl.UnitOfWork;
-using Newtonsoft.Json;
 
 namespace ExpenseTracker.Api.Impl.Query;
 
@@ -29,7 +28,7 @@ IRequestHandler<GetPersonnelByIdQuery, ApiResponse<PersonnelResponse>>
         Entity.RemoveAll(p => p.IsActive == false);
 
         if (Entity.Count <= 0)
-            return new ApiResponse<List<PersonnelResponse>>("Personnel not found");
+            return new ApiResponse<List<PersonnelResponse>>("Personel bulunamadı", 400);
 
         var mapped = mapper.Map<List<PersonnelResponse>>(Entity);
 
@@ -41,7 +40,7 @@ IRequestHandler<GetPersonnelByIdQuery, ApiResponse<PersonnelResponse>>
         var entity = await unitOfWork.PersonnelRepository.GetPersonnelDetailById(request.Id);
 
         if (entity == null || !entity.IsActive)
-            return new ApiResponse<PersonnelResponse>("Personnel not found");
+            return new ApiResponse<PersonnelResponse>("Personel bulunamadı", 400);
 
         var mapped = mapper.Map<PersonnelResponse>(entity);
         //var jsonSerialize = JsonConvert.SerializeObject(mapped);

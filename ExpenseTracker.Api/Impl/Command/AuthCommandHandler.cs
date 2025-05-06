@@ -25,15 +25,13 @@ IRequestHandler<CreateAuthTokenCommand, ApiResponse<AuthResponse>>
     {
         var personnel = await unitOfWork.PersonnelRepository.GetByUserNameAsync(request.Auth.UserName);
         if (personnel == null)
-            return new ApiResponse<AuthResponse>("Personnel username or password is incorrect");
+            return new ApiResponse<AuthResponse>("Personnel username or password is incorrect", 401);
 
-        // Verify Password
         bool isVerifyPassword = HashHelper.VerifyPasswordHash(request.Auth.Password, 
                                 personnel.PersonnelPassword.Password, personnel.PersonnelPassword.Secret);
         if (!isVerifyPassword)
-            return new ApiResponse<AuthResponse>("User name or password is incorrect");
+            return new ApiResponse<AuthResponse>("User name or password is incorrect", 400);
 
-        // Create Token
         var token = tokenService.GenerateToken(personnel);
         var entity = new AuthResponse
         {

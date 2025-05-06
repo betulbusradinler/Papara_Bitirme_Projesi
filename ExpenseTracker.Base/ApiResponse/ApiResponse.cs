@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Azure.Core;
 namespace ExpenseTracker.Base;
 
 public class ApiResponse
@@ -8,7 +9,7 @@ public class ApiResponse
         return JsonSerializer.Serialize(this);
     }
 
-    public ApiResponse(string message = null)
+    public ApiResponse(string message = null, int status = 0)
     {
         if (string.IsNullOrWhiteSpace(message))
         {
@@ -18,12 +19,14 @@ public class ApiResponse
         {
             Success = false;
             Message = message;
+            Status = status;
         }
     }
     public bool Success { get; set; }
     public string Message { get; set; }
     public DateTime ServerDate { get; set; } = DateTime.UtcNow;
     public Guid ReferenceNo { get; set; } = Guid.NewGuid();
+    public int Status { get; set; }
 }
 
 public class ApiResponse<T>
@@ -31,6 +34,7 @@ public class ApiResponse<T>
     public DateTime ServerDate { get; set; } = DateTime.UtcNow;
     public Guid ReferenceNo { get; set; } = Guid.NewGuid();
     public bool Success { get; set; }
+    public int Status { get; set; }
     public string Message { get; set; }
     public T Response { get; set; }
 
@@ -46,10 +50,11 @@ public class ApiResponse<T>
         Response = data;
         Message = "Success";
     }
-    public ApiResponse(string message)
+    public ApiResponse(string message, int status)
     {
         Success = false;
         Response = default;
         Message = message;
+        Status = status;
     }
 }

@@ -15,7 +15,7 @@ IRequestHandler<DeletePaymentCategoryCommand, ApiResponse>
 {
     private readonly  IUnitOfWork unitOfWork;
     private readonly IMapper mapper;
-
+    private const string PaymentCategoryNotFoundMessage = "Harcama bulunamadı veya aktif değil";
     public PaymentCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         this.unitOfWork = unitOfWork;
@@ -37,11 +37,8 @@ IRequestHandler<DeletePaymentCategoryCommand, ApiResponse>
     public async Task<ApiResponse> Handle(UpdatePaymentCategoryCommand request, CancellationToken cancellationToken)
     {
         var entity = await unitOfWork.PaymentCategoryRepository.GetByIdAsync(request.Id);
-        if (entity == null)
-            return new ApiResponse("PaymentCategory not found");
-
-        if (!entity.IsActive)
-            return new ApiResponse("PaymentCategory is not active");
+        if (entity == null || !entity.IsActive)
+            return new ApiResponse(PaymentCategoryNotFoundMessage, 400);
 
         entity.Name = request.PaymentCategoryRequest.Name;
         unitOfWork.PaymentCategoryRepository.Update(entity);
@@ -54,11 +51,8 @@ IRequestHandler<DeletePaymentCategoryCommand, ApiResponse>
     {
       var entity = await  unitOfWork.PaymentCategoryRepository.GetByIdAsync(request.Id);
 
-        if (entity == null)
-            return new ApiResponse("PaymentCategory not found");
-
-        if (!entity.IsActive)
-            return new ApiResponse("PaymentCategory is not active");
+        if (entity == null || !entity.IsActive)
+            return new ApiResponse(PaymentCategoryNotFoundMessage, 400);
 
         await unitOfWork.PaymentCategoryRepository.DeleteByIdAsync(entity.Id);
         await unitOfWork.Complete();

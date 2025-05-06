@@ -21,18 +21,17 @@ IRequestHandler<DeletePersonnelCommand, ApiResponse>
         this.appSession = appSession;
         this.unitOfWork = unitOfWork;
     }
-    // User Register Rolü 1 Admin olanlar bu işlemleri yapabilir
-    // Password Validation Eklenebilir.
     public async Task<ApiResponse> Handle(CreatePersonnelCommand request, CancellationToken cancellationToken)
     {
         if(request.PersonnelRequest.Password != request.PersonnelRequest.PasswordConfirm)
-            return new ApiResponse("Şifreler Eşleşmiyor");
+            return new ApiResponse("Şifreler Eşleşmiyor", 400);
 
         var mapped = mapper.Map<Personnel>(request.PersonnelRequest);  
 
         var entity = await unitOfWork.PersonnelRepository.AddAsync(mapped);
         await unitOfWork.Complete();
-        var response = mapper.Map<PersonnelResponse>(entity);
+
+        mapper.Map<PersonnelResponse>(entity);
 
         return new ApiResponse();
     }
@@ -40,12 +39,9 @@ IRequestHandler<DeletePersonnelCommand, ApiResponse>
     public async Task<ApiResponse> Handle(UpdatePersonnelCommand request, CancellationToken cancellationToken)
     {
         var entity = await unitOfWork.PersonnelRepository.GetByIdAsync(request.Id);
-        if (entity == null)
-            return new ApiResponse("Personnel not found");
+        if (entity == null || !entity.IsActive)
+            return new ApiResponse("Personel kayıtlı veya aktif değil", 400);
 
-        if (!entity.IsActive)
-            return new ApiResponse("Personnel is not active");
-        
         entity.UserName = request.PersonnelRequest.UserName;
         entity.FirstName = request.PersonnelRequest.FirstName;
         entity.LastName = request.PersonnelRequest.LastName;
@@ -61,7 +57,7 @@ IRequestHandler<DeletePersonnelCommand, ApiResponse>
     {
         var entity = await unitOfWork.PersonnelRepository.GetByIdAsync(request.Id);
         if (entity == null || !entity.IsActive)
-            return new ApiResponse("Personnel not found");
+            return new ApiResponse("Personel kayıtlı veya aktif değil", 400);
 
         entity.IsActive = false;
 

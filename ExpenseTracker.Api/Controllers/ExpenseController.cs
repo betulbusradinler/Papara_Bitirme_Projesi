@@ -21,6 +21,8 @@ public class ExpenseController : ControllerBase
     {
         var operation = new GetAllExpenseQuery();
         var result = await mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -30,6 +32,8 @@ public class ExpenseController : ControllerBase
     {
         var operation = new GetAllPersonnelExpenseQuery();
         var result = await mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -39,6 +43,8 @@ public class ExpenseController : ControllerBase
     {
         var operation = new CreateExpenseCommand(ExpenseRequest);
         var result = await mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -49,6 +55,8 @@ public class ExpenseController : ControllerBase
     {
         var operation = new CreateExpenseListCommand(ExpenseRequests);
         var result = await mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -57,6 +65,8 @@ public class ExpenseController : ControllerBase
     {
         var operation = new GetFilteredExpensesQuery(filter);
         var result = await mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -65,6 +75,8 @@ public class ExpenseController : ControllerBase
     {
         var operation = new UpdateExpenseCommand(id, ExpenseRequest);
         var result = await mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -73,6 +85,8 @@ public class ExpenseController : ControllerBase
     {
         var operation = new ApproveOrRejectExpenseCommand(id, approveOrRejectExpense);
         var result = await mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -81,6 +95,8 @@ public class ExpenseController : ControllerBase
     {
         var operation = new DeleteExpenseCommand(id);
         var result = await mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 }

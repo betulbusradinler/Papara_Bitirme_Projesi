@@ -20,9 +20,10 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
     private readonly IMapper mapper;
     private readonly IAppSession appSession;
     private readonly IPaymentService paymentService;
-    private const string UnauthorizedMessage = "You are not authorized to perform this action.";
-    private const string ExpenseNotFoundMessage = "Expense not found or inactive.";
-    private const string InvalidStateMessage = "Invalid expense demand state.";
+    private const string UnauthorizedMessage = "Bu Apiye Erişim Yetkiniz Yok";
+    private const string ExpenseNotFoundMessage = "Harcama bulunamadı veya aktif değil";
+    private const string InvalidStateMessage = "Geçersiz Harcama Onaylama Değeri";
+    private const string PaymentCategoryNotFoundMessage = "Geçersiz Harcama Onaylama Değeri";
     public ExpenseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IAppSession appSession, IPaymentService paymentService)
     {
         this.appSession = appSession;
@@ -34,11 +35,11 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
     {
         var personnelExistUser = await GetCurrentPersonnelAsync();
         if (personnelExistUser == null)
-            return new ApiResponse<ExpenseResponse>(UnauthorizedMessage);
+            return new ApiResponse<ExpenseResponse>(UnauthorizedMessage, 401);
 
         var paymentCategoryExist = await unitOfWork.PaymentCategoryRepository.GetByIdAsync(request.ExpenseRequest.PaymentCategoryId);
         if (paymentCategoryExist == null)
-            return new ApiResponse<ExpenseResponse>("Payment category is not exist");
+            return new ApiResponse<ExpenseResponse>(ExpenseNotFoundMessage, 400);
 
         var mapped = mapper.Map<Expense>(request.ExpenseRequest);
 
@@ -69,18 +70,18 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
     {
         var personnelExistUser = await GetCurrentPersonnelAsync();
         if (personnelExistUser == null)
-            return new ApiResponse(UnauthorizedMessage);
+            return new ApiResponse(UnauthorizedMessage, 401);
 
         var paymentCategoryExist = await unitOfWork.PaymentCategoryRepository.GetByIdAsync(request.ExpenseRequest.PaymentCategoryId);
         if (paymentCategoryExist == null)
-            return new ApiResponse("Payment category is not exist");
+            return new ApiResponse(PaymentCategoryNotFoundMessage, 400);
 
         var entity = await unitOfWork.ExpenseRepository.GetExpenseWithDetailByIdAsync(request.Id);
         if (entity == null)
-            return new ApiResponse("Expense not found");
+            return new ApiResponse(ExpenseNotFoundMessage, 400);
 
         if (!entity.IsActive)
-            return new ApiResponse("Expense is not active");
+            return new ApiResponse(InvalidStateMessage, 400);
 
         entity.PaymentCategoryId = request.ExpenseRequest.PaymentCategoryId;
         entity.ExpenseDetail.Amount = request.ExpenseRequest.ExpenseDetailRequest.Amount;
@@ -100,19 +101,16 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
     {
         var entity = await unitOfWork.ExpenseRepository.GetExpenseWithDetailByIdAsync(request.Id);
         if (entity == null || !entity.IsActive)
-            return new ApiResponse(ExpenseNotFoundMessage);
+            return new ApiResponse(ExpenseNotFoundMessage, 400);
 
         var personnelExistUser = await GetCurrentPersonnelAsync();
         if (personnelExistUser == null)
-            return new ApiResponse(UnauthorizedMessage);
+            return new ApiResponse(UnauthorizedMessage, 401);
 
         if (!Enum.TryParse<DemandState>(request.approveOrRejectExpense.DemandState.ToString(), out var demandState))
-            return new ApiResponse(InvalidStateMessage);
+            return new ApiResponse(InvalidStateMessage, 400);
 
         entity.Demand = demandState;
-
-        if (demandState == DemandState.OnayBekliyor)
-            return new ApiResponse("Ödeme ya onaylanmalı ya da reddedilmeli");
 
         if (demandState == DemandState.Onaylandı)
             return await HandleApproval(entity, personnelExistUser);
@@ -130,8 +128,8 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
     {
         var entity = await unitOfWork.ExpenseRepository.GetByIdAsync(request.Id);
 
-        if (entity == null)
-            return new ApiResponse("Expense not found");
+        if (entity == null || !entity.IsActive)
+            return new ApiResponse(ExpenseNotFoundMessage, 400);
 
         await unitOfWork.ExpenseRepository.DeleteByIdAsync(entity.Id);
         await unitOfWork.Complete();
@@ -157,10 +155,10 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
             var payment = await unitOfWork.PaymentRepository.AddAsync(mapped);
             await unitOfWork.Complete();
 
-            return payment != null ? new ApiResponse() : new ApiResponse($"Payment not Registered");
+            return payment != null ? new ApiResponse() : new ApiResponse($"Payment not Registered", 500);
         }
         else
-            return new ApiResponse($"Payment failed: {result.Message}");
+            return new ApiResponse($"Payment failed: {result.Message}", 402);
     }
 
 }

@@ -9,10 +9,11 @@ using ExpenseTracker.Base;
 using ExpenseTracker.Api.Service;
 using ExpenseTracker.Api.Impl.UnitOfWork;
 using Microsoft.OpenApi.Models;
-using FluentValidation.AspNetCore;
 using ExpenseTracker.Api.Validation;
+using MediatR;
+using FluentValidation.AspNetCore;
 
-namespace ExpenseTracker;
+namespace ExpenseTracker.Api;
 public class Startup
 {
     public IConfiguration Configuration { get; }
@@ -51,6 +52,8 @@ public class Startup
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddScoped<IPaymentService, PaymentService>();
+
+        services.AddScoped<DapperContext>();
 
         services.AddAuthentication(x =>
         {
@@ -115,24 +118,15 @@ public class Startup
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI();
+
         }
-
-
-        using (var scope = app.ApplicationServices.CreateScope())
-        {
-            var db = scope.ServiceProvider.GetRequiredService<ExpenseTrackDbContext>();
-            DbInitializer.InitializeAsync(db);
-        }
-
 
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseRouting();
         app.UseAuthorization();
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-        //app.Run();
+
 
     }
 }
-
-

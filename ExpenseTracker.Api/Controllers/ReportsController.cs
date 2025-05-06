@@ -1,10 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ExpenseTracker.Schema;
 using ExpenseTracker.Base;
-using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Impl.Cqrs;
-using ExpenseTracker.Api.Domain;
+using ExpenseTracker.Schema;
 
 namespace ExpenseTracker.Api.Controller;
 
@@ -12,26 +10,39 @@ namespace ExpenseTracker.Api.Controller;
 [ApiController]
 public class ReportsController : ControllerBase
 {
-    // private readonly IReportRepository _reportRepository;
-    private readonly IAppSession _appSession;
     private readonly IMediator mediator;
-    public ReportsController(IMediator mediator, IAppSession appSession)
+    public ReportsController(IMediator mediator)
     {
         this.mediator = mediator;
-        _appSession = appSession;
     }
 
     [HttpGet("personnel")]
     public async Task<IActionResult> GetPersonnelReport()
     {
-        var operation = new GetAllPersonnelExpenseQuery();
+        var operation = new GetPersonnelExpenseReportQuery();
         var result = await mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
-    [HttpGet("company")]
-    public async Task<IActionResult> GetCompanyReport(DateTime start, DateTime end)
+    [HttpGet("CompanyPayment")]
+    public async Task<IActionResult> GetPaymentSummary([FromQuery] PaymentSummaryRequest request)
     {
-        return Ok();
+        var operation = new GetCompanyPaymentReportQuery(request);
+        var result = await mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
+        return Ok(result);
+    }
+
+    [HttpGet("ExpenseSummary")]
+    public async Task<IActionResult> GetExpenseSummary([FromQuery] ExpenseSummaryRequest request)
+    {
+        var operation = new GetAllExpenseReportQuery(request);
+        var result = await mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
+        return Ok(result);
     }
 }

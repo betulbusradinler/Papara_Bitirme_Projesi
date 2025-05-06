@@ -23,6 +23,8 @@ public class PersonnelController : ControllerBase
     {
         var operation = new GetAllPersonnelQuery();
         var result = await _mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -32,6 +34,8 @@ public class PersonnelController : ControllerBase
     {
         var operation = new GetPersonnelByIdQuery(id);
         var result = await _mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -41,6 +45,8 @@ public class PersonnelController : ControllerBase
     {
         var operation = new CreatePersonnelCommand(personnelRequest);
         var result = await _mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
     
@@ -49,6 +55,8 @@ public class PersonnelController : ControllerBase
     {
         var operation = new UpdatePersonnelCommand(id, personnelRequest);
         var result = await _mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 
@@ -57,6 +65,8 @@ public class PersonnelController : ControllerBase
     {
         var operation = new DeletePersonnelCommand(id);
         var result = await _mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
         return Ok(result);
     }
 }
