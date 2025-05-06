@@ -5,6 +5,8 @@
 
 Bu proje, saha personellerinin yaptığı harcamaların takip edilmesi, onay süreçlerinin yürütülmesi ve yöneticiler tarafından raporlanması amacıyla geliştirilmiştir. ASP.NET Core API, Entity Framework Core, Dapper ve MSSQL kullanılarak geliştirilmiştir. JWT ile güvenli kimlik doğrulama sağlanmıştır.
 
+---
+
 ## 🧩 Özellikler
 
 - 👤 Kullanıcı Rolleri: **Admin** ve **Personel**
@@ -18,6 +20,8 @@ Bu proje, saha personellerinin yaptığı harcamaların takip edilmesi, onay sü
 - 🧾 Audit Log Takibi (Kim, ne zaman, ne yaptı bilgileri)
 - ❗ Global Exception Middleware ile Hata Yönetimi
 - 🔒 ISO Standartlarına Uygun Şifre Güvenliği (Şifreler ayrı tabloda tutulur)
+
+---
 
 ## 🛠️ Kullanılan Teknolojiler
 
@@ -37,6 +41,8 @@ Bu proje, saha personellerinin yaptığı harcamaların takip edilmesi, onay sü
 | View + SP        | SQL Server View ve Stored Procedure ile raporlama |
 | Middleware       | Global hata ve audit log yakalama         |
 
+---
+
 ## 🔐 Rol Bazlı Yetkilendirme
 
 - **Personel**
@@ -47,61 +53,35 @@ Bu proje, saha personellerinin yaptığı harcamaların takip edilmesi, onay sü
   - Onay / Reddet işlemleri yapar
   - Raporları görüntüler
 
+---
+
 ## 📄 API Kullanımı
 
 Swagger arayüzü üzerinden API'yi test edebilirsiniz:
-https://localhost:7180/swagger/index.html
-veya 
-http://localhost:5068/swagger/index.html
+- https://localhost:7180/swagger/index.html
+
+- http://localhost:5068/swagger/index.html
+
+--- 
 
 ## 🧪 Kurulum ve Çalıştırma
 
 1. Repository'yi klonlayın:
 
-git clone https://github.com/betulbusradinler/Papara_Bitirme_Projesi.git
+- git clone https://github.com/betulbusradinler/Papara_Bitirme_Projesi.git
 
 2. Bağımlılıkları yükleyin ve migration'ı uygulayın:
 
-dotnet restore
-dotnet ef migrations add InitialMigration
-dotnet ef database update
+- dotnet restore
+- dotnet ef migrations add InitialMigration
+- dotnet ef database update
 
 3. Projeyi başlatın:
 
-dotnet run 
-veya 
-dotnet watch run
-## 🗂️ Klasör Yapısı
+- dotnet run 
+- dotnet watch run
 
-ExpenseTracker.Api/
-│
-├── Controllers/
-├── Impl/
-│   ├── Command/
-│   ├── Query/
-│   ├── Validators/
-│   ├── Middlewares/
-│   └── Logging/
-├── Models/
-├── DTOs/
-├── Repositories/
-├── Services/
-└── Program.cs
-
-ExpenseTracker.Base/
-│
-├── ApiResponse/
-├── Domain/
-│── Session/
-├── Models/
-└── Token/
-
-ExpenseTracker.Schema/
-│
-├── Auth
-├── Expense
-│── ExpenseDetail
-└── PaymentCategory
+--- 
 
 ## 📌 Notlar
 Projede Code-First yaklaşımı kullanılmıştır. Yeni bir veritabanı oluşturulurken dotnet ef database update komutunun çalıştırılması gerekir.
@@ -109,15 +89,15 @@ Projede Code-First yaklaşımı kullanılmıştır. Yeni bir veritabanı oluştu
 Swagger üzerinden token alımı için giriş endpoint'ine JWT bilgileri girilmelidir.
 
 ## 📥 Gelecek Geliştirmeler
-Frontend (React veya Blazor) arayüzü
+- Frontend (React veya Blazor) arayüzü
 
-Harcama limiti tanımı
+- Harcama limiti tanımı
 
-Excel / PDF rapor çıktıları
+- Excel / PDF rapor çıktıları
 
-Redis ile cache yönetimi
+- Redis ile cache yönetimi
 
-RabbitMQ ile bildirim sistemi
+- RabbitMQ ile bildirim sistemi
 
 ## 🧑‍💻 Geliştirici
 Busra Betul Dinler
