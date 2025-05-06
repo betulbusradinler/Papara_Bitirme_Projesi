@@ -122,9 +122,3 @@ RabbitMQ ile bildirim sistemi
 ## 🧑‍💻 Geliştirici
 Busra Betul Dinler
 betulbusradinler@gmail.com
-
-Refactor Proejct And Add New Requirement
-- Add Default Initial Personnel
-- Refactor ReadMe File
-- Add Authorize Attribute
-
