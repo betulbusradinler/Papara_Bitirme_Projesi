@@ -99,6 +99,10 @@ Swagger üzerinden token alımı için giriş endpoint'ine JWT bilgileri girilme
 
 - RabbitMQ ile bildirim sistemi
 
+## Publish Postman File
+
+- https://documenter.getpostman.com/view/43011934/2sB2j7dUqA
+
 ## 🧑‍💻 Geliştirici
 Busra Betul Dinler
 betulbusradinler@gmail.com
