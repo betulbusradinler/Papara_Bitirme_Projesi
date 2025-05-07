@@ -31,6 +31,9 @@ public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
         builder.Property(x => x.PaymentCategoryId).IsRequired(true);
         builder.Property(x => x.StaffId).IsRequired(true);
 
+    builder.Property(x => x.RejectDescription)
+     .IsRequired(false).HasDefaultValue("Reddedilme Mesajı Yok.");
+
     builder.HasOne(x => x.Payment)
       .WithOne(x => x.Expense)
       .HasForeignKey<Payment>(x => x.ExpenseId)

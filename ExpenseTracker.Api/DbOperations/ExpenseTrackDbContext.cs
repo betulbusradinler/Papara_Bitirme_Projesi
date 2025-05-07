@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Api.Domain;
 using ExpenseTracker.Base;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace ExpenseTracker.Api.DbOperations;
 
@@ -49,6 +50,33 @@ public class ExpenseTrackDbContext:DbContext
                IsActive = true
            }
        );
+
+        modelBuilder.Entity<PersonnelPassword>().HasData(
+             new PersonnelPassword
+             {
+                 Id = -1,
+                 PersonnelId = -1,
+                 Password = "lzrYokbJ5sItqIb9t1mk5VRKmC6SYJtrKDzpwFjvXs2pbA+fwHqydW8/IDnIAQMnM5k5GFgCmVhxJ4CJ8vF08Q==", //test123
+                 Secret = "LURfZOB6CtJ3gspXcsj3tx9C3YZRgKTVtdPlubEkhATaRx9iF0oZ25V9aRbD5B63M8WDdV2T/1X9ZVL2K9PKew==",
+                 CreatedDate = DateTime.UtcNow,
+                 CreatedUser = "system",
+                 IsActive = true,
+             }
+        );
+
+        modelBuilder.Entity<PersonnelPassword>().HasData(
+             new PersonnelPassword
+             {
+                 Id = -2,
+                 PersonnelId = -2,
+                 Password = "lzrYokbJ5sItqIb9t1mk5VRKmC6SYJtrKDzpwFjvXs2pbA+fwHqydW8/IDnIAQMnM5k5GFgCmVhxJ4CJ8vF08Q==", //test123
+                 Secret = "LURfZOB6CtJ3gspXcsj3tx9C3YZRgKTVtdPlubEkhATaRx9iF0oZ25V9aRbD5B63M8WDdV2T/1X9ZVL2K9PKew==",
+                 CreatedDate = DateTime.UtcNow,
+                 CreatedUser = "system",
+                 IsActive = true,
+             }
+        );
+
     }
 
     public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -114,6 +142,7 @@ public class ExpenseTrackDbContext:DbContext
     public DbSet<ExpenseManager> ExpenseManagers { get; set; }
     public DbSet<PaymentCategory> PaymentCategories { get; set; }
     public DbSet<Personnel> Personnels { get; set; }
+    public DbSet<PersonnelPassword> PersonnelPasswords { get; set; }
     public DbSet<PersonnelAddress> PersonnelAddresses { get; set; }
     public DbSet<Staff> Staffs { get; set; }
     public DbSet<Payment> Payments { get; set; }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ExpenseTracker.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrations : Migration
+    public partial class InitialCreateDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -144,7 +144,7 @@ namespace ExpenseTracker.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PersonnelPassword",
+                name: "PersonnelPasswords",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -160,9 +160,9 @@ namespace ExpenseTracker.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonnelPassword", x => x.Id);
+                    table.PrimaryKey("PK_PersonnelPasswords", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PersonnelPassword_Personnels_PersonnelId",
+                        name: "FK_PersonnelPasswords_Personnels_PersonnelId",
                         column: x => x.PersonnelId,
                         principalTable: "Personnels",
                         principalColumn: "Id",
@@ -255,8 +255,17 @@ namespace ExpenseTracker.Api.Migrations
                 columns: new[] { "Id", "CreatedDate", "CreatedUser", "Discriminator", "Email", "FirstName", "Iban", "IsActive", "LastLoginDate", "LastName", "OpenDate", "Role", "UpdatedDate", "UpdatedUser", "UserName" },
                 values: new object[,]
                 {
-                    { -2, new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5190), "System", "Personnel", "personel@personel.com", "John", "TR0987654321", true, null, "Doe", new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5190), "Personnel", null, null, "personel" },
-                    { -1, new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5180), "System", "Personnel", "admin@admin.com", "Admin", "TR1234567890", true, null, "User", new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5150), "Admin", null, null, "admin" }
+                    { -2, new DateTime(2025, 5, 7, 6, 11, 23, 77, DateTimeKind.Local).AddTicks(5730), "System", "Personnel", "personel@personel.com", "John", "TR0987654321", true, null, "Doe", new DateTime(2025, 5, 7, 6, 11, 23, 77, DateTimeKind.Local).AddTicks(5730), "Personnel", null, null, "personel" },
+                    { -1, new DateTime(2025, 5, 7, 6, 11, 23, 77, DateTimeKind.Local).AddTicks(5720), "System", "Personnel", "admin@admin.com", "Admin", "TR1234567890", true, null, "User", new DateTime(2025, 5, 7, 6, 11, 23, 77, DateTimeKind.Local).AddTicks(5690), "Admin", null, null, "admin" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PersonnelPasswords",
+                columns: new[] { "Id", "CreatedDate", "CreatedUser", "IsActive", "Password", "PersonnelId", "Secret", "UpdatedDate", "UpdatedUser" },
+                values: new object[,]
+                {
+                    { -2, new DateTime(2025, 5, 7, 3, 11, 23, 77, DateTimeKind.Utc).AddTicks(5790), "system", true, "lzrYokbJ5sItqIb9t1mk5VRKmC6SYJtrKDzpwFjvXs2pbA+fwHqydW8/IDnIAQMnM5k5GFgCmVhxJ4CJ8vF08Q==", -2, "LURfZOB6CtJ3gspXcsj3tx9C3YZRgKTVtdPlubEkhATaRx9iF0oZ25V9aRbD5B63M8WDdV2T/1X9ZVL2K9PKew==", null, null },
+                    { -1, new DateTime(2025, 5, 7, 3, 11, 23, 77, DateTimeKind.Utc).AddTicks(5770), "system", true, "lzrYokbJ5sItqIb9t1mk5VRKmC6SYJtrKDzpwFjvXs2pbA+fwHqydW8/IDnIAQMnM5k5GFgCmVhxJ4CJ8vF08Q==", -1, "LURfZOB6CtJ3gspXcsj3tx9C3YZRgKTVtdPlubEkhATaRx9iF0oZ25V9aRbD5B63M8WDdV2T/1X9ZVL2K9PKew==", null, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -287,8 +296,8 @@ namespace ExpenseTracker.Api.Migrations
                 column: "PersonnelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersonnelPassword_PersonnelId",
-                table: "PersonnelPassword",
+                name: "IX_PersonnelPasswords_PersonnelId",
+                table: "PersonnelPasswords",
                 column: "PersonnelId",
                 unique: true);
 
@@ -315,7 +324,7 @@ namespace ExpenseTracker.Api.Migrations
                 name: "PersonnelAddresses");
 
             migrationBuilder.DropTable(
-                name: "PersonnelPassword");
+                name: "PersonnelPasswords");
 
             migrationBuilder.DropTable(
                 name: "PersonnelPhone");

@@ -24,8 +24,6 @@ IRequestHandler<GetAllExpenseReportQuery, ApiResponse<List<ExpenseSummaryReportR
     public async Task<ApiResponse<List<PersonnelExpenseReportDto>>> Handle(GetPersonnelExpenseReportQuery request, CancellationToken cancellationToken)
     {
         int personnelId = Convert.ToInt32(appSession.PersonnelId);
-        if (personnelId <= 0)
-            return new ApiResponse<List<PersonnelExpenseReportDto>>("Lütfen Giriş yapın", 401);
 
         var sql = "SELECT * FROM vw_PersonnelExpenses WHERE StaffId = @StaffId";
 

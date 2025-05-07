@@ -58,13 +58,13 @@ public class ExpenseFilterRequestValidator : AbstractValidator<ExpenseFilterRequ
         When(x => x.StartDate.HasValue, () =>
         {
             RuleFor(x => x.StartDate.Value)
-                .LessThanOrEqualTo(DateTime.Today);
+                .LessThanOrEqualTo(DateTime.Now);
         });
 
         When(x => x.EndDate.HasValue, () =>
         {
             RuleFor(x => x.EndDate.Value)
-                .LessThanOrEqualTo(DateTime.Today);
+                .LessThanOrEqualTo(DateTime.Now);
         });
 
         RuleFor(x => x)

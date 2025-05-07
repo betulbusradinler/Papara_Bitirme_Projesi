@@ -77,7 +77,7 @@ IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
                   query = query.Where(x => x.CreatedDate >= request.Filter.StartDate.Value);
 
             if (request.Filter.EndDate.HasValue)
-                  query = query.Where(x => x.CreatedDate <= request.Filter.EndDate.Value);
+                  query = query.Where(x => x.CreatedDate <= request.Filter.EndDate.Value.Date.AddDays(1).AddTicks(-1));
 
             var list = await query.ToListAsync(cancellationToken);
 

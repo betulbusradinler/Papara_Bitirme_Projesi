@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpenseTracker.Api.Migrations
 {
     [DbContext(typeof(ExpenseTrackDbContext))]
-    [Migration("20250506220811_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20250507031123_InitialCreateDB")]
+    partial class InitialCreateDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -334,28 +334,28 @@ namespace ExpenseTracker.Api.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5180),
+                            CreatedDate = new DateTime(2025, 5, 7, 6, 11, 23, 77, DateTimeKind.Local).AddTicks(5720),
                             CreatedUser = "System",
                             Email = "admin@admin.com",
                             FirstName = "Admin",
                             Iban = "TR1234567890",
                             IsActive = true,
                             LastName = "User",
-                            OpenDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5150),
+                            OpenDate = new DateTime(2025, 5, 7, 6, 11, 23, 77, DateTimeKind.Local).AddTicks(5690),
                             Role = "Admin",
                             UserName = "admin"
                         },
                         new
                         {
                             Id = -2,
-                            CreatedDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5190),
+                            CreatedDate = new DateTime(2025, 5, 7, 6, 11, 23, 77, DateTimeKind.Local).AddTicks(5730),
                             CreatedUser = "System",
                             Email = "personel@personel.com",
                             FirstName = "John",
                             Iban = "TR0987654321",
                             IsActive = true,
                             LastName = "Doe",
-                            OpenDate = new DateTime(2025, 5, 7, 1, 8, 10, 696, DateTimeKind.Local).AddTicks(5190),
+                            OpenDate = new DateTime(2025, 5, 7, 6, 11, 23, 77, DateTimeKind.Local).AddTicks(5730),
                             Role = "Personnel",
                             UserName = "personel"
                         });
@@ -471,7 +471,29 @@ namespace ExpenseTracker.Api.Migrations
                     b.HasIndex("PersonnelId")
                         .IsUnique();
 
-                    b.ToTable("PersonnelPassword");
+                    b.ToTable("PersonnelPasswords");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            CreatedDate = new DateTime(2025, 5, 7, 3, 11, 23, 77, DateTimeKind.Utc).AddTicks(5770),
+                            CreatedUser = "system",
+                            IsActive = true,
+                            Password = "lzrYokbJ5sItqIb9t1mk5VRKmC6SYJtrKDzpwFjvXs2pbA+fwHqydW8/IDnIAQMnM5k5GFgCmVhxJ4CJ8vF08Q==",
+                            PersonnelId = -1,
+                            Secret = "LURfZOB6CtJ3gspXcsj3tx9C3YZRgKTVtdPlubEkhATaRx9iF0oZ25V9aRbD5B63M8WDdV2T/1X9ZVL2K9PKew=="
+                        },
+                        new
+                        {
+                            Id = -2,
+                            CreatedDate = new DateTime(2025, 5, 7, 3, 11, 23, 77, DateTimeKind.Utc).AddTicks(5790),
+                            CreatedUser = "system",
+                            IsActive = true,
+                            Password = "lzrYokbJ5sItqIb9t1mk5VRKmC6SYJtrKDzpwFjvXs2pbA+fwHqydW8/IDnIAQMnM5k5GFgCmVhxJ4CJ8vF08Q==",
+                            PersonnelId = -2,
+                            Secret = "LURfZOB6CtJ3gspXcsj3tx9C3YZRgKTVtdPlubEkhATaRx9iF0oZ25V9aRbD5B63M8WDdV2T/1X9ZVL2K9PKew=="
+                        });
                 });
 
             modelBuilder.Entity("ExpenseTracker.Api.Domain.PersonnelPhone", b =>
