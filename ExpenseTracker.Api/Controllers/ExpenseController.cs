@@ -28,17 +28,6 @@ public class ExpenseController : ControllerBase
     }
 
     [Authorize(Roles = "Personnel")]
-    [HttpGet("me")]
-    public async Task<IActionResult> GetExpenseById()
-    {
-        var operation = new GetAllPersonnelExpenseQuery();
-        var result = await mediator.Send(operation);
-        if (result.Success == false)
-            return StatusCode(result.Status, result.Message);
-        return Ok(result);
-    }
-
-    [Authorize(Roles = "Personnel")]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] ExpenseRequest ExpenseRequest)
     {

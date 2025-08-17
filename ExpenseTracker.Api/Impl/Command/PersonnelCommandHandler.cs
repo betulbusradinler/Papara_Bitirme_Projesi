@@ -41,7 +41,6 @@ IRequestHandler<DeletePersonnelCommand, ApiResponse>
         var entity = await unitOfWork.PersonnelRepository.GetByIdAsync(request.Id);
         if (entity == null || !entity.IsActive)
             return new ApiResponse("Personel kayıtlı veya aktif değil", 400);
-
         entity.UserName = request.PersonnelRequest.UserName;
         entity.FirstName = request.PersonnelRequest.FirstName;
         entity.LastName = request.PersonnelRequest.LastName;

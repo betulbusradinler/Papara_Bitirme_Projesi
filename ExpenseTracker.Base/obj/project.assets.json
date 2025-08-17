@@ -4382,11 +4382,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/ExpenseTracker.Base.csproj",
+      "projectUniqueName": "/Users/busrabetuldinler/Documents/PROJELER/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/ExpenseTracker.Base.csproj",
       "projectName": "ExpenseTracker.Base",
-      "projectPath": "/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/ExpenseTracker.Base.csproj",
+      "projectPath": "/Users/busrabetuldinler/Documents/PROJELER/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/ExpenseTracker.Base.csproj",
       "packagesPath": "/Users/busrabetuldinler/.nuget/packages/",
-      "outputPath": "/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/obj/",
+      "outputPath": "/Users/busrabetuldinler/Documents/PROJELER/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/busrabetuldinler/.nuget/NuGet/NuGet.Config"

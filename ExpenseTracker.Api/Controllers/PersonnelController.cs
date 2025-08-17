@@ -38,6 +38,16 @@ public class PersonnelController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin, Personnel")]
+    [HttpGet("Expenses")]
+    public async Task<IActionResult> GetExpensesByPersonnelId([FromQuery] int? personnelId)
+    {
+        var operation = new GetExpensesByPersonnelIdQuery(personnelId);
+        var result = await _mediator.Send(operation);
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
+        return Ok(result);
+    }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] PersonnelRequest personnelRequest)

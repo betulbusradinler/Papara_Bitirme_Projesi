@@ -57,6 +57,9 @@ public class Program
     {
         var host = CreateHostBuilder(args).Build();
 
+        /* Burada DB ye bağlanma hatası aldım.
+         A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: TCP Provider, error: 40 - Could not open a connection to SQL Server: Could not open a connection to SQL Server) */
+
         using (var scope = host.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<ExpenseTrackDbContext>();

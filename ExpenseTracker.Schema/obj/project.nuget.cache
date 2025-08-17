@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TmDXXSN1PUg=",
+  "dgSpecHash": "glk34LeYCMg=",
   "success": true,
-  "projectFilePath": "/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Schema/ExpenseTracker.Schema.csproj",
+  "projectFilePath": "/Users/busrabetuldinler/Documents/PROJELER/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Schema/ExpenseTracker.Schema.csproj",
   "expectedPackageFiles": [
     "/Users/busrabetuldinler/.nuget/packages/automapper/12.0.0/automapper.12.0.0.nupkg.sha512",
     "/Users/busrabetuldinler/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/11.0.0/automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

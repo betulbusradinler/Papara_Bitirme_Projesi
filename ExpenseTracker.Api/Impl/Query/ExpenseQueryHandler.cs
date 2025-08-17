@@ -11,7 +11,6 @@ namespace ExpenseTracker.Api.Impl.Query;
 public class ExpenseQueryHandler :
 IRequestHandler<GetAllExpenseQuery, ApiResponse<List<ExpenseResponse>>>,
 IRequestHandler<GetExpenseByIdQuery, ApiResponse<ExpenseResponse>>,
-IRequestHandler<GetAllPersonnelExpenseQuery, ApiResponse<List<ExpenseResponse>>>,
 IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
 {
       private readonly IUnitOfWork unitOfWork;
@@ -31,19 +30,6 @@ IRequestHandler<GetFilteredExpensesQuery, ApiResponse<List<ExpenseResponse>>>
             var entity = await unitOfWork.ExpenseRepository.GetAllExpensesWithExpenseDetail();
             entity.RemoveAll(p => p.IsActive == false);
 
-            if (entity.Count <= 0)
-                  return new ApiResponse<List<ExpenseResponse>>(ExpenseNotFoundMessage, 400);
-
-            var mapped = mapper.Map<List<ExpenseResponse>>(entity);
-            return new ApiResponse<List<ExpenseResponse>>(mapped);
-      }
-
-      public async Task<ApiResponse<List<ExpenseResponse>>> Handle(GetAllPersonnelExpenseQuery request, CancellationToken cancellationToken)
-      {
-            int convertPersonnelId = Convert.ToInt32(appSession.PersonnelId);
-            var entity = await unitOfWork.ExpenseRepository.GetAllExpensesByPersonnelIdAsync(convertPersonnelId);
-
-            entity.RemoveAll(p => p.IsActive == false);
             if (entity.Count <= 0)
                   return new ApiResponse<List<ExpenseResponse>>(ExpenseNotFoundMessage, 400);
 

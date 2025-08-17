@@ -4362,11 +4362,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Schema/ExpenseTracker.Schema.csproj",
+      "projectUniqueName": "/Users/busrabetuldinler/Documents/PROJELER/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Schema/ExpenseTracker.Schema.csproj",
       "projectName": "ExpenseTracker.Schema",
-      "projectPath": "/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Schema/ExpenseTracker.Schema.csproj",
+      "projectPath": "/Users/busrabetuldinler/Documents/PROJELER/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Schema/ExpenseTracker.Schema.csproj",
       "packagesPath": "/Users/busrabetuldinler/.nuget/packages/",
-      "outputPath": "/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Schema/obj/",
+      "outputPath": "/Users/busrabetuldinler/Documents/PROJELER/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Schema/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/busrabetuldinler/.nuget/NuGet/NuGet.Config"
@@ -4381,8 +4381,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/ExpenseTracker.Base.csproj": {
-              "projectPath": "/Users/busrabetuldinler/Documents/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/ExpenseTracker.Base.csproj"
+            "/Users/busrabetuldinler/Documents/PROJELER/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/ExpenseTracker.Base.csproj": {
+              "projectPath": "/Users/busrabetuldinler/Documents/PROJELER/Papara_Bitirme_Projesi/Papara/ExpenseTracker.Base/ExpenseTracker.Base.csproj"
             }
           }
         }

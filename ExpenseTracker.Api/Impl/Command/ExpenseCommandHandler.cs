@@ -74,6 +74,9 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
         if (!entity.IsActive)
             return new ApiResponse(InvalidStateMessage, 400);
 
+        if (entity.Demand != 0)
+            return new ApiResponse("Harcama Onaylandığı İçin Güncellenemez.");
+
         entity.PaymentCategoryId = request.ExpenseRequest.PaymentCategoryId;
         entity.ExpenseDetail.Amount = request.ExpenseRequest.ExpenseDetailRequest.Amount;
         entity.ExpenseDetail.Description = request.ExpenseRequest.ExpenseDetailRequest.Description;
@@ -87,7 +90,6 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
         return new ApiResponse();
     }
 
-    // buranın yetkisi adminde 
     public async Task<ApiResponse> Handle(ApproveOrRejectExpenseCommand request, CancellationToken cancellationToken)
     {
         var entity = await unitOfWork.ExpenseRepository.GetExpenseWithDetailByIdAsync(request.Id);
@@ -119,6 +121,8 @@ IRequestHandler<DeleteExpenseCommand, ApiResponse>
 
         if (entity == null || !entity.IsActive)
             return new ApiResponse(ExpenseNotFoundMessage, 400);
+        if (entity.Demand != 0)
+            return new ApiResponse("Harcama Onaylandığı veya Reddedildiği İçin Silinemez", 400);
 
         await unitOfWork.ExpenseRepository.DeleteByIdAsync(entity.Id);
         await unitOfWork.Complete();

@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using ExpenseTracker.Api.DbOperations;
 using ExpenseTracker.Api.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +34,7 @@ public class ExpenseRepository : GenericRepository<Expense>, IExpenseRepository
     }
 
 
-    public async Task<List<Expense>> GetAllExpensesByPersonnelIdAsync(int staffId, params string[] includes)
+    public async Task<List<Expense>> GetExpensesByPersonnelIdAsync(int staffId, params string[] includes)
     {
         var query = dbContext.Set<Expense>()
             .Where(e => e.StaffId == staffId)
@@ -56,4 +55,6 @@ public class ExpenseRepository : GenericRepository<Expense>, IExpenseRepository
         query = includes.Aggregate(query, (current, inc) => current.Include(inc));
         return query;
     }
+
+    
 }
