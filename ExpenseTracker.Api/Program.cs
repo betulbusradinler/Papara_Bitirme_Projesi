@@ -63,7 +63,7 @@ public class Program
         using (var scope = host.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<ExpenseTrackDbContext>();
-            db.Database.Migrate();
+            //db.Database.Migrate();
             RunCustomSqlScripts(scope.ServiceProvider);
         }
 
