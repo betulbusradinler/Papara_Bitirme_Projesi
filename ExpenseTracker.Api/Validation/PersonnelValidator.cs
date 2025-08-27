@@ -37,7 +37,9 @@ public class PersonnelAddressValidator : AbstractValidator<PersonnelAddressReque
 {
     public PersonnelAddressValidator()
     {
-        RuleFor(x => x.CountryCode).NotEmpty();
+        RuleFor(x => x.CountryCode).NotEmpty()
+        .WithMessage("Country code is required")
+        .Length(2).WithMessage("Country code must be exactly 2 characters");
         RuleFor(x => x.City).NotEmpty();
         RuleFor(x => x.District).NotEmpty();
         RuleFor(x => x.Street).NotEmpty();
@@ -52,6 +54,7 @@ public class PersonnelPhoneValidator : AbstractValidator<PersonnelPhoneRequest>
         RuleFor(x => x.CountryCode).NotEmpty();
         RuleFor(x => x.PhoneNumber)
             .NotEmpty()
-            .Matches(@"^\d{10,15}$");
+            .Matches(@"^\d{10,15}$")
+            .WithMessage("PhoneNumber must be between 10 and 15 digits.");
     }
 }
