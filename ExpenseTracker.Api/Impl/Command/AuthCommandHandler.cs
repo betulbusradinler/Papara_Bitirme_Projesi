@@ -37,7 +37,6 @@ IRequestHandler<CreateAuthTokenCommand, ApiResponse<AuthResponse>>
                 Expiration = DateTime.UtcNow.AddMinutes(jwtConfig.AccessTokenExpiration)
             };
             return new ApiResponse<AuthResponse>(entty);
-
         }
 
         bool isVerifyPassword = HashHelper.VerifyPasswordHash(request.Auth.Password, 

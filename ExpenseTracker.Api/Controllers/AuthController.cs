@@ -16,10 +16,12 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("Token")]
-    public async Task<ApiResponse<AuthResponse>> Post([FromBody] AuthRequest request)
+    public async Task<IActionResult> Post([FromBody] AuthRequest request)
     {
         var operation = new CreateAuthTokenCommand(request);
         var result = await _mediator.Send(operation);
-        return result;
+        if (result.Success == false)
+            return StatusCode(result.Status, result.Message);
+        return Ok(result); ;
     }
 }
