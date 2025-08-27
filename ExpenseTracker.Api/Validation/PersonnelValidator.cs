@@ -39,7 +39,7 @@ public class PersonnelAddressValidator : AbstractValidator<PersonnelAddressReque
     {
         RuleFor(x => x.CountryCode).NotEmpty()
         .WithMessage("Country code is required")
-        .Length(2).WithMessage("Country code must be exactly 2 characters");
+        .Length(3).WithMessage("Country code must be exactly 3 characters");
         RuleFor(x => x.City).NotEmpty();
         RuleFor(x => x.District).NotEmpty();
         RuleFor(x => x.Street).NotEmpty();
