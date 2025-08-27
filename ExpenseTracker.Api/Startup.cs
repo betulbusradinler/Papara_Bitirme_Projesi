@@ -117,11 +117,14 @@ public class Startup
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            app.UseSwagger();
-            app.UseSwaggerUI();
 
         }
-
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExpenseTracker API V1");
+            c.RoutePrefix = string.Empty; // Swagger'ı root URL'e yönlendir
+        });
         app.UseMiddleware<ErrorHandlerMiddleware>();
         app.UseHttpsRedirection();
         app.UseAuthentication();

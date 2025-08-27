@@ -106,20 +106,3 @@ Swagger üzerinden token alımı için giriş endpoint'ine JWT bilgileri girilme
 ## 🧑‍💻 Geliştirici
 Busra Betul Dinler
 betulbusradinler@gmail.com
-
-
-### CHANGED 
-
--  EXPENSE CONTROLLERDA OLAN BİR PERSONELE AİT TÜM HARCAMA LİSTESİNİ 
-- PERSONNEL CONTROLLERA ALDIM.
-    [Authorize(Roles = "Admin, Personnel")]
-    [HttpGet("me")]
-    public async Task<IActionResult> GetExpenseById()
-    {
-        var operation = new GetAllPersonnelExpenseQuery();
-        var result = await mediator.Send(operation);
-        if (result.Success == false)
-            return StatusCode(result.Status, result.Message);
-        return Ok(result);
-    }
-- Onaylanmayan Harcamalar Güncellenemez ve Silinemez olarak güncellendi yani harcama silme ve güncelleme güncellendi
